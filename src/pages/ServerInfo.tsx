@@ -588,7 +588,7 @@ const ServerInfo = () => {
                     </div>
                     <div className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
                       <span className="font-medium">Version</span>
-                      <span>1.20.x</span>
+                      <span>1.12 - 1.21</span>
                     </div>
                     <div className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
                       <span className="font-medium">Status</span>
