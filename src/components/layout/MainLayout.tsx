@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,9 +15,14 @@ import {
   HelpCircle,
   ChevronDown,
   LogIn,
-  UserPlus
+  UserPlus,
+  Users,
+  UserCircle,
+  LogOut
 } from 'lucide-react';
 import { FaDiscord, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -29,6 +34,8 @@ export function MainLayout({ children, className }: MainLayoutProps) {
   const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -113,6 +120,10 @@ export function MainLayout({ children, className }: MainLayoutProps) {
                       <MessageSquare className="h-4 w-4" />
                       <span>Community</span>
                     </NavLink>
+                    <NavLink to="/team" isActive={isActive('/team')} className="px-4 py-2">
+                      <Users className="h-4 w-4" />
+                      <span>Our Team</span>
+                    </NavLink>
                     <NavLink to="/support" isActive={isActive('/support')} className="px-4 py-2">
                       <HelpCircle className="h-4 w-4" />
                       <span>Support</span>
@@ -122,20 +133,45 @@ export function MainLayout({ children, className }: MainLayoutProps) {
               </div>
             </nav>
 
-            {/* Desktop Auth Buttons */}
+            {/* Desktop Auth/Profile Buttons */}
             <div className="hidden md:flex items-center gap-2">
-              <Link to="/login">
-                <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-full px-3 py-1.5">
-                  <LogIn className="h-4 w-4 mr-1" />
-                  Log in
-                </Button>
-              </Link>
-              <Link to="/register">
-                <Button className="bg-purple-600 hover:bg-purple-700 rounded-full px-3 py-1.5 transition-colors duration-200">
-                  <UserPlus className="h-4 w-4 mr-1" />
-                  Sign up
-                </Button>
-              </Link>
+              {isAuthenticated ? (
+                <div className="relative group">
+                  <button
+                    className="flex items-center gap-2 focus:outline-none"
+                  >
+                    <Avatar>
+                      <AvatarFallback>
+                        <UserCircle className="h-8 w-8 text-purple-400" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </button>
+                  <div className="absolute right-0 mt-2 w-40 rounded-xl bg-[#1A1D24] border border-white/10 shadow-lg py-2 z-50 hidden group-focus-within:block group-hover:block">
+                    <Link to={user?.role === 'admin' ? '/admin' : '/user/dashboard'} className="block px-4 py-2 text-sm hover:bg-purple-500/10">Profile</Link>
+                    <button
+                      onClick={() => { logout(); navigate('/'); }}
+                      className="w-full text-left px-4 py-2 text-sm hover:bg-purple-500/10 flex items-center gap-2"
+                    >
+                      <LogOut className="h-4 w-4" /> Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-full px-3 py-1.5">
+                      <LogIn className="h-4 w-4 mr-1" />
+                      Log in
+                    </Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button className="bg-purple-600 hover:bg-purple-700 rounded-full px-3 py-1.5 transition-colors duration-200">
+                      <UserPlus className="h-4 w-4 mr-1" />
+                      Sign up
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -184,25 +220,49 @@ export function MainLayout({ children, className }: MainLayoutProps) {
                 <MessageSquare className="h-4 w-4" />
                 <span>Community</span>
               </MobileNavLink>
+              <MobileNavLink to="/team" isActive={isActive('/team')} onClick={() => setIsMenuOpen(false)}>
+                <Users className="h-4 w-4" />
+                <span>Our Team</span>
+              </MobileNavLink>
               <MobileNavLink to="/support" isActive={isActive('/support')} onClick={() => setIsMenuOpen(false)}>
                 <HelpCircle className="h-4 w-4" />
                 <span>Support</span>
               </MobileNavLink>
               
-              {/* Mobile Auth Buttons */}
+              {/* Mobile Auth/Profile Buttons */}
               <div className="pt-4 space-y-2 border-t border-white/10">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block">
-                  <Button variant="outline" className="w-full bg-transparent border-purple-500/30 text-purple-400 hover:bg-purple-500/10 rounded-full">
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Log in
-                  </Button>
-                </Link>
-                <Link to="/register" onClick={() => setIsMenuOpen(false)} className="block">
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700 rounded-full">
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Sign up
-                  </Button>
-                </Link>
+                {isAuthenticated ? (
+                  <>
+                    <Link to={user?.role === 'admin' ? '/admin' : '/user/dashboard'} onClick={() => setIsMenuOpen(false)} className="block">
+                      <Button variant="outline" className="w-full bg-transparent border-purple-500/30 text-purple-400 hover:bg-purple-500/10 rounded-full flex items-center gap-2">
+                        <UserCircle className="h-4 w-4 mr-2" />
+                        Profile
+                      </Button>
+                    </Link>
+                    <Button
+                      onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}
+                      className="w-full bg-purple-600 hover:bg-purple-700 rounded-full flex items-center gap-2"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block">
+                      <Button variant="outline" className="w-full bg-transparent border-purple-500/30 text-purple-400 hover:bg-purple-500/10 rounded-full">
+                        <LogIn className="h-4 w-4 mr-2" />
+                        Log in
+                      </Button>
+                    </Link>
+                    <Link to="/register" onClick={() => setIsMenuOpen(false)} className="block">
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700 rounded-full">
+                        <UserPlus className="h-4 w-4 mr-2" />
+                        Sign up
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -254,8 +314,8 @@ export function MainLayout({ children, className }: MainLayoutProps) {
               <div className="space-y-2">
                 <FooterLink to="/rules">Rules</FooterLink>
                 <FooterLink to="/community">Community</FooterLink>
+                <FooterLink to="/team">Our Team</FooterLink>
                 <FooterLink to="/support">Support</FooterLink>
-                <FooterLink to="/required-mods">Required Mods</FooterLink>
               </div>
             </div>
 
