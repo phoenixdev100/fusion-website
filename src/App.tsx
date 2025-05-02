@@ -30,6 +30,7 @@ import Content from "./pages/admin/Content";
 import Server from "./pages/admin/Server";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import Team from "./pages/Team";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
                 <Route path="leaderboard" element={<LeaderBoard />} />
                 <Route path="rules" element={<Rules />} />
                 <Route path="community" element={<Community />} />
+                <Route path="team" element={<Team />} />
                 <Route path="support" element={<Support />} />
                 <Route path="vote" element={<Vote />} />
                 <Route path="required-mods" element={<RequiredMods />} />
