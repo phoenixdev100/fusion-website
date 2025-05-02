@@ -62,8 +62,23 @@ const Register = () => {
       });
       
       if (response.success) {
-        toast.success("Account created successfully! Please log in.");
-        navigate('/login');
+        // Automatically log the user in after registration
+        const loginResponse = await authService.login({
+          email: formData.email,
+          password: formData.password
+        });
+        if (loginResponse.success && loginResponse.user) {
+          localStorage.setItem('fusion_user', JSON.stringify(loginResponse.user));
+          toast.success('Account created and logged in!');
+          if (loginResponse.user.role === 'admin') {
+            navigate('/admin', { replace: true });
+          } else {
+            navigate('/user/dashboard', { replace: true });
+          }
+        } else {
+          toast.success('Account created successfully! Please log in.');
+          navigate('/login');
+        }
       } else {
         toast.error(response.error || "Failed to create account");
       }
