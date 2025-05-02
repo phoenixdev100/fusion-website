@@ -48,7 +48,7 @@ const Store = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             <StoreItem
-              title="PvP Practice - VIP"
+              title="VIP Rank"
               description="Entry-level rank for Practice PvP."
               price={4}
               benefits={["Exclusive chat prefix", "Access to VIP queue", "/nick command"]}
@@ -56,7 +56,7 @@ const Store = () => {
               color="from-blue-500 to-indigo-500"
             />
             <StoreItem
-              title="PvP Practice - VIP+"
+              title="VIP+ Rank"
               description="Enhanced perks for dedicated PvP players."
               price={8}
               benefits={["All VIP perks", "VIP+ chat badge", "Priority support"]}
@@ -107,50 +107,50 @@ const Store = () => {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             <StoreItem
-              title="Soul"
+              title="Soul Rank"
               description="Entry-level rank for Lifesteal."
               price={4.99}
-              benefits={["Soul chat prefix", "Basic perks", "/hat command"]}
+              benefits={["Soul chat prefix", "Basic perks", "Soul kit"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-2', '_blank', 'noopener,noreferrer')}
               color="from-red-500 to-pink-500"
             />
             <StoreItem
-              title="Lifesteal- Knight"
+              title="Knight Rank"
               description="Knight rank with extra perks."
               price={8.99}
-              benefits={["All Soul perks", "Knight chat badge", "/craft command"]}
+              benefits={["All Soul perks", "Knight chat badge", "Knight kit"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-2', '_blank', 'noopener,noreferrer')}
               color="from-pink-500 to-yellow-500"
             />
             <StoreItem
-              title="Lifesteal- Sentinel"
+              title="Sentinel Rank"
               description="Sentinel rank with advanced features."
               price={11.99}
-              benefits={["All Knight perks", "Sentinel chat color", "/enderchest command"]}
+              benefits={["All Knight perks", "Sentinel chat color", "Sentinel kit"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-2', '_blank', 'noopener,noreferrer')}
               color="from-yellow-500 to-orange-500"
             />
             <StoreItem
-              title="Lifesteal- Master"
+              title="Master Rank"
               description="Master rank for experienced players."
               price={16.99}
-              benefits={["All Sentinel perks", "Master chat tag", "/fly command"]}
+              benefits={["All Sentinel perks", "Master chat tag", "Master kit"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-2', '_blank', 'noopener,noreferrer')}
               color="from-orange-500 to-emerald-500"
             />
             <StoreItem
-              title="Lifesteal- Mercenery"
+              title="Mercenery Rank"
               description="Mercenery rank with premium perks."
               price={24.99}
-              benefits={["All Master perks", "Mercenery chat badge", "/fix command"]}
+              benefits={["All Master perks", "Mercenery chat badge", "Mercenery kit"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-2', '_blank', 'noopener,noreferrer')}
               color="from-emerald-500 to-blue-500"
             />
             <StoreItem
-              title="Fusion"
+              title="Fusion Rank"
               description="Ultimate rank for Lifesteal."
               price={90}
-              benefits={["All Mercenery perks", "Fusion chat tag", "Unique cosmetics"]}
+              benefits={["All Mercenery perks", "Fusion chat tag", "Fusion kit"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-2', '_blank', 'noopener,noreferrer')}
               color="from-blue-500 to-purple-500"
             />
