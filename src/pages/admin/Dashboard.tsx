@@ -1,193 +1,268 @@
+import { useEffect, useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import {
+  Users,
+  Server,
+  Settings,
+  FileText,
+  Home,
+  LogOut,
+  ArrowRight,
+  Menu as MenuIcon,
+  X
+} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { toast } from '@/components/ui/use-toast';
+import { cn } from '@/lib/utils';
 
-import { AdminLayout } from '@/components/layout/AdminLayout';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, FileText, Eye, ArrowUp, ArrowDown, Settings, Server, Zap, Clock } from 'lucide-react';
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+const NavLink = ({ children, to, isActive, className }: { 
+  children: React.ReactNode, 
+  to: string, 
+  isActive: boolean,
+  className?: string 
+}) => (
+  <Link
+    to={to}
+    className={cn(
+      "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200",
+      isActive
+        ? "bg-purple-500/20 text-purple-400"
+        : "text-gray-300 hover:bg-purple-500/10 hover:text-purple-400",
+      className
+    )}
+  >
+    {children}
+  </Link>
+);
 
-const Dashboard = () => {
-  // Mock data for charts
-  const playerData = [
-    { name: 'Mon', value: 48 },
-    { name: 'Tue', value: 62 },
-    { name: 'Wed', value: 51 },
-    { name: 'Thu', value: 88 },
-    { name: 'Fri', value: 103 },
-    { name: 'Sat', value: 142 },
-    { name: 'Sun', value: 125 },
+const MobileNavLink = ({ children, to, isActive, onClick }: { 
+  children: React.ReactNode, 
+  to: string, 
+  isActive: boolean,
+  onClick: () => void
+}) => (
+  <Link
+    to={to}
+    onClick={onClick}
+    className={cn(
+      "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
+      isActive
+        ? "bg-purple-500/20 text-purple-400"
+        : "text-gray-300 hover:bg-purple-500/10 hover:text-purple-400"
+    )}
+  >
+    {children}
+  </Link>
+);
+
+const TopNav = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
+  const navItems = [
+    { icon: Home, label: 'Dashboard', path: '/admin' },
+    { icon: Users, label: 'Users', path: '/admin/users' },
+    { icon: Server, label: 'Server', path: '/admin/server' },
+    { icon: FileText, label: 'Content', path: '/admin/content' },
+    { icon: Settings, label: 'Settings', path: '/admin/settings' },
   ];
 
   return (
-    <AdminLayout>
-      <div className="space-y-6">
-        <h1 className="text-3xl font-bold">Server Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome to your Minecraft server control panel. Monitor performance and player activity.
-        </p>
-        
-        {/* Stats cards */}
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard 
-            title="Online Players" 
-            value="42" 
-            description="Currently active on the server"
-            change={8}
-            icon={<Users className="h-5 w-5" />}
-          />
-          <StatCard 
-            title="Server Uptime" 
-            value="99.8%" 
-            description="Last 30 days"
-            change={0.2}
-            icon={<Server className="h-5 w-5" />}
-          />
-          <StatCard 
-            title="TPS" 
-            value="19.8" 
-            description="Ticks per second"
-            change={-0.1}
-            icon={<Zap className="h-5 w-5" />}
-          />
-          <StatCard 
-            title="Average Playtime" 
-            value="2.4h" 
-            description="Per player this week"
-            change={0.3}
-            icon={<Clock className="h-5 w-5" />}
-          />
-        </div>
-        
-        {/* Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Player Activity</CardTitle>
-            <CardDescription>Daily active players this week</CardDescription>
-          </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={playerData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#ddd" vertical={false} />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} />
-                <YAxis tickLine={false} axisLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '6px' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke="#60A5FA" 
-                  strokeWidth={2} 
-                  dot={{ r: 4 }} 
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-        
-        {/* Recent activity */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Server Activity</CardTitle>
-            <CardDescription>The latest events on your Minecraft server</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {activityItems.map((item, i) => (
-                <div key={i} className="flex gap-4 items-start border-b pb-4 last:border-0 last:pb-0">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${item.bgColor}`}>
-                    {item.icon}
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-medium">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.description}</p>
-                  </div>
-                  <div className="text-sm text-muted-foreground whitespace-nowrap">
-                    {item.time}
-                  </div>
-                </div>
+    <>
+      <div className="fixed top-0 left-0 right-0 bg-[#0A0C10] border-b border-white/10 z-50">
+        <div className="max-w-screen-2xl mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link to="/admin" className="flex items-center gap-3">
+              <img src="/src/img/fusion-logo.png" alt="Logo" className="h-8 w-8" />
+              <span className="font-bold text-lg bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+                Admin Panel
+              </span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center justify-center flex-1 gap-2">
+              {navItems.map((item) => (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  isActive={isActive(item.path)}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </NavLink>
               ))}
+            </nav>
+
+            {/* Desktop Logout */}
+            <div className="hidden md:flex items-center">
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                className="text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-full px-3 py-1.5"
+              >
+                <LogOut className="h-4 w-4 mr-1" />
+                Logout
+              </Button>
             </div>
-          </CardContent>
-          <CardFooter className="border-t">
-            <a href="#" className="text-sm text-primary hover:underline">
-              View all server logs
-            </a>
-          </CardFooter>
-        </Card>
+
+            {/* Mobile Menu Button */}
+            <div className="flex items-center gap-2 md:hidden">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="text-white hover:bg-purple-500/10"
+              >
+                {isMenuOpen ? <X className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden bg-[#0F1218] border-t border-white/10">
+            <div className="px-4 py-2 space-y-1">
+              {navItems.map((item) => (
+                <MobileNavLink
+                  key={item.path}
+                  to={item.path}
+                  isActive={isActive(item.path)}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <item.icon className="h-4 w-4" />
+                  <span>{item.label}</span>
+                </MobileNavLink>
+              ))}
+              
+              {/* Mobile Logout */}
+              <div className="pt-4 border-t border-white/10">
+                <Button
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full bg-purple-600 hover:bg-purple-700 rounded-full flex items-center gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-    </AdminLayout>
+
+      {/* Mobile Menu Backdrop */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
+    </>
   );
 };
 
-interface StatCardProps {
-  title: string;
-  value: string;
-  description: string;
-  change: number;
-  icon: React.ReactNode;
-}
+const Dashboard = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-const StatCard = ({ title, value, description, change, icon }: StatCardProps) => {
-  const isPositive = change > 0;
-  
+  const quickActions = [
+    {
+      title: "Manage Users",
+      description: "View and manage player accounts, permissions, and roles",
+      icon: Users,
+      path: "/admin/users",
+      gradient: "from-blue-500 to-blue-600"
+    },
+    {
+      title: "Server Controls",
+      description: "Monitor server status and perform maintenance tasks",
+      icon: Server,
+      path: "/admin/server",
+      gradient: "from-purple-500 to-purple-600"
+    },
+    {
+      title: "Content Management",
+      description: "Update announcements, rules, and server information",
+      icon: FileText,
+      path: "/admin/content",
+      gradient: "from-emerald-500 to-emerald-600"
+    },
+    {
+      title: "Settings",
+      description: "Configure server settings and administration options",
+      icon: Settings,
+      path: "/admin/settings",
+      gradient: "from-amber-500 to-amber-600"
+    }
+  ];
+
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-          {icon}
+    <div className="min-h-screen bg-[#0F1218]">
+      <TopNav />
+      <div className="pt-16">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-screen-2xl mx-auto">
+          {/* Welcome Hero Section */}
+          <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/10 p-8 mb-8">
+            <div className="relative z-10">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+                Welcome back, <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">{user?.username}</span>!
+              </h1>
+              <p className="text-lg text-white/80 max-w-2xl mb-6">
+                Welcome to your Minecraft server administration dashboard. From here, you can manage all aspects of your server,
+                monitor performance, and ensure an amazing experience for your players.
+              </p>
+              <Button 
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20"
+                onClick={() => navigate('/admin/server')}
+              >
+                View Server Status
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-3xl" />
+          </div>
+
+          {/* Quick Actions Grid */}
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+            {quickActions.map((action, index) => (
+              <Card 
+                key={index}
+                className="bg-[#1A1D24] border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group"
+                onClick={() => navigate(action.path)}
+              >
+                <CardHeader>
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${action.gradient} flex items-center justify-center mb-4`}>
+                    <action.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-white group-hover:text-white/90">{action.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-white/60 group-hover:text-white/70">{action.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        <p className="text-sm text-muted-foreground">{description}</p>
-      </CardContent>
-      <CardFooter className="border-t p-2">
-        <div className="flex items-center text-sm">
-          {isPositive ? (
-            <ArrowUp className="h-4 w-4 text-green-500 mr-1" />
-          ) : (
-            <ArrowDown className="h-4 w-4 text-red-500 mr-1" />
-          )}
-          <span className={isPositive ? "text-green-500" : "text-red-500"}>
-            {Math.abs(change)}% {isPositive ? "increase" : "decrease"}
-          </span>
-          <span className="text-muted-foreground ml-1">from yesterday</span>
-        </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 };
-
-const activityItems = [
-  {
-    title: "New player joined",
-    description: "MinecraftPro123 joined the server for the first time",
-    time: "10 minutes ago",
-    icon: <Users className="h-5 w-5 text-white" />,
-    bgColor: "bg-blue-500"
-  },
-  {
-    title: "World backup",
-    description: "Automatic world backup completed successfully",
-    time: "2 hours ago",
-    icon: <FileText className="h-5 w-5 text-white" />,
-    bgColor: "bg-green-500"
-  },
-  {
-    title: "Player report",
-    description: "DiamondMiner filed a report against TNTLover",
-    time: "5 hours ago",
-    icon: <FileText className="h-5 w-5 text-white" />,
-    bgColor: "bg-amber-500"
-  },
-  {
-    title: "Server restart",
-    description: "Scheduled server maintenance completed",
-    time: "1 day ago",
-    icon: <Settings className="h-5 w-5 text-white" />,
-    bgColor: "bg-purple-500"
-  },
-];
 
 export default Dashboard;

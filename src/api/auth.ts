@@ -1,86 +1,130 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData {
+export interface User {
+  id: string;
   username: string;
   email: string;
-  password: string;
+  role: 'admin' | 'user';
+  createdAt: string;
+  lastLogin: string;
 }
 
-export interface AuthResponse {
+export interface LoginResponse {
   success: boolean;
-  user?: {
-    id: string;
-    username: string;
-    email: string;
-    role: string;
-  };
-  token?: string;
-  error?: string;
+  token: string;
+  user: User;
+  message?: string;
+}
+
+export interface RegisterResponse {
+  success: boolean;
+  token: string;
+  user: User;
   message?: string;
 }
 
 export const authService = {
-  async login(credentials: LoginCredentials): Promise<AuthResponse> {
+  // Authentication
+  async login(email: string, password: string): Promise<LoginResponse> {
     try {
-      const response = await axios.post(`${API_URL}/login`, credentials);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-      }
+      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
       return response.data;
     } catch (error: any) {
-      if (error.response) {
-        return error.response.data;
-      }
-      return {
-        success: false,
-        error: 'An error occurred while logging in'
-      };
+      console.error('Auth service login error:', error.response?.data || error);
+      throw error;
     }
   },
 
-  async register(data: RegisterData): Promise<AuthResponse> {
+  async register(username: string, email: string, password: string): Promise<RegisterResponse> {
     try {
-      const response = await axios.post(`${API_URL}/register`, data);
-      if (response.data.token) {
+      const response = await axios.post(`${API_URL}/auth/register`, {
+        username,
+        email,
+        password,
+      });
+      
+      if (response.data.success) {
+        // Store the token immediately
         localStorage.setItem('token', response.data.token);
       }
+      
       return response.data;
     } catch (error: any) {
-      if (error.response) {
-        return error.response.data;
-      }
-      return {
-        success: false,
-        error: 'An error occurred while registering'
-      };
+      console.error('Auth service registration error:', error.response?.data || error);
+      throw error;
     }
   },
 
-  async logout(): Promise<void> {
-    localStorage.removeItem('fusion_user');
+  logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  },
+
+  // User Management (Admin)
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const response = await axios.get(`${API_URL}/admin/users`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async createUser(userData: { username: string; email: string; password: string; role: string }) {
+    try {
+      const response = await axios.post(`${API_URL}/admin/users`, userData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async updateUser(userId: string, userData: { username?: string; email?: string; password?: string; role?: string }) {
+    try {
+      const response = await axios.put(`${API_URL}/admin/users/${userId}`, userData, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  async deleteUser(userId: string) {
+    try {
+      const response = await axios.delete(`${API_URL}/admin/users/${userId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
   },
 
   getCurrentUser() {
-    const userStr = localStorage.getItem('fusion_user');
+    const userStr = localStorage.getItem('user');
     if (userStr) {
       return JSON.parse(userStr);
     }
     return null;
   },
 
-  isAuthenticated(): boolean {
-    return !!this.getCurrentUser();
+  getToken() {
+    return localStorage.getItem('token');
   },
 
-  getToken(): string | null {
-    return localStorage.getItem('token');
+  isAuthenticated() {
+    return !!this.getToken();
+  },
+
+  isAdmin() {
+    const user = this.getCurrentUser();
+    return user && user.role === 'admin';
   }
 }; 

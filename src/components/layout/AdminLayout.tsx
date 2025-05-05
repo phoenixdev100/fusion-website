@@ -1,196 +1,181 @@
-
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Settings, 
-  FileText, 
-  LogOut, 
-  Menu, 
-  X,
-  Home,
+import { useAuth } from '@/contexts/AuthContext';
+import {
+  LayoutDashboard,
+  Users,
+  Settings,
   Server,
-  Gamepad2
+  ShoppingCart,
+  FileText,
+  MessageSquare,
+  Bell,
+  LogOut,
+  ChevronLeft,
+  Menu,
+  Globe,
+  Shield,
+  Gamepad
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
+const navigation = [
+  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { name: 'Users', href: '/admin/users', icon: Users },
+  { name: 'Server Status', href: '/admin/server', icon: Server },
+  { name: 'Store Management', href: '/admin/store', icon: ShoppingCart },
+  { name: 'Content', href: '/admin/content', icon: FileText },
+  { name: 'Support Tickets', href: '/admin/support', icon: MessageSquare },
+  { name: 'Website Settings', href: '/admin/settings', icon: Settings },
+];
+
 export const AdminLayout = ({ children }: AdminLayoutProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const navigate = useNavigate();
+  const [collapsed, setCollapsed] = useState(false);
+  const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const [notifications, setNotifications] = useState(3); // Mock notifications count
 
   useEffect(() => {
-    // Check if user is logged in
-    const user = localStorage.getItem('fusion_user');
-    if (!user) {
-      toast.error('Please login to access the admin portal');
-      navigate('/login');
-      return;
-    }
-    
-    try {
-      const userData = JSON.parse(user);
-      if (userData.role !== 'admin') {
-        toast.error('You do not have permission to access this page');
-        navigate('/');
-        return;
-      }
-      
-      setIsAuthenticated(true);
-    } catch (error) {
-      toast.error('Authentication error');
+    if (!user || user.role !== 'admin') {
       navigate('/login');
     }
-  }, [navigate]);
+  }, [user, navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('fusion_user');
-    toast.success('Logged out successfully');
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
   };
 
-  if (!isAuthenticated) {
-    return null; // Don't render anything until authentication check is complete
-  }
-
   return (
-    <div className="flex min-h-screen bg-muted/30">
-      {/* Sidebar for desktop */}
+    <div className="min-h-screen bg-background">
+      {/* Sidebar */}
       <aside
-        className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col bg-[#1A1F2C] text-white border-r border-[#2D3748] shadow-sm transition-transform duration-300 ease-in-out lg:static lg:translate-x-0",
-          !isSidebarOpen && "-translate-x-full"
-        )}
+        className={`fixed left-0 top-0 z-40 h-screen transition-width duration-300 ease-in-out bg-card border-r
+          ${collapsed ? 'w-16' : 'w-64'}`}
       >
-        <div className="flex h-16 items-center border-b border-[#2D3748] px-6">
-          <Link to="/admin" className="flex items-center gap-2 font-semibold">
-            <div className="h-8 w-8 rounded-md bg-gradient-to-r from-[#44A675] to-[#3B82F6] flex items-center justify-center">
-              <Gamepad2 className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-white">MC Control</span>
-          </Link>
+        {/* Logo */}
+        <div className="h-16 flex items-center justify-between px-4 border-b">
+          {!collapsed && (
+            <Link to="/admin" className="flex items-center gap-2">
+              <Gamepad className="h-6 w-6 text-primary" />
+              <span className="font-bold text-lg">Fusion Admin</span>
+            </Link>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(!collapsed)}
+            className="ml-auto"
+          >
+            {collapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </Button>
         </div>
-        <nav className="flex-1 space-y-1 p-4">
-          <NavItem 
-            to="/admin" 
-            icon={<LayoutDashboard className="h-5 w-5" />} 
-            label="Dashboard" 
-            isActive={location.pathname === '/admin'}
-          />
-          <NavItem 
-            to="/admin/users" 
-            icon={<Users className="h-5 w-5" />} 
-            label="Players" 
-            isActive={location.pathname === '/admin/users'}
-          />
-          <NavItem 
-            to="/admin/content" 
-            icon={<FileText className="h-5 w-5" />} 
-            label="Content" 
-            isActive={location.pathname === '/admin/content'}
-          />
-          <NavItem 
-            to="/admin/settings" 
-            icon={<Settings className="h-5 w-5" />} 
-            label="Settings" 
-            isActive={location.pathname === '/admin/settings'}
-          />
-          <NavItem 
-            to="/admin/server" 
-            icon={<Server className="h-5 w-5" />} 
-            label="Server Controls" 
-            isActive={location.pathname === '/admin/server'}
-          />
+
+        {/* Navigation */}
+        <nav className="space-y-1 px-2 py-4">
+          {navigation.map((item) => {
+            const isActive = location.pathname === item.href;
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors
+                  ${isActive
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  }
+                  ${collapsed ? 'justify-center' : ''}`}
+              >
+                <item.icon className="h-5 w-5" />
+                {!collapsed && <span>{item.name}</span>}
+              </Link>
+            );
+          })}
         </nav>
-        <div className="border-t border-[#2D3748] p-4">
-          <Link to="/">
-            <Button variant="outline" className="w-full justify-start mb-2 gap-2 bg-[#2D3748] border-[#4A5568] hover:bg-[#4A5568] text-white">
-              <Home className="h-4 w-4" />
-              Back to Website
-            </Button>
-          </Link>
-          <Button 
-            variant="destructive" 
-            className="w-full justify-start gap-2"
-            onClick={handleLogout}
-          >
-            <LogOut className="h-4 w-4" />
-            Logout
-          </Button>
-        </div>
       </aside>
-      
+
       {/* Main content */}
-      <div className="flex flex-col flex-1">
+      <div className={`${collapsed ? 'ml-16' : 'ml-64'} transition-margin duration-300 ease-in-out`}>
         {/* Top bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background px-6">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className="lg:hidden" 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? <X /> : <Menu />}
-          </Button>
-          <div className="flex-1 text-lg font-semibold">Minecraft Server Admin</div>
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="hidden sm:flex gap-2"
-              onClick={handleLogout}
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </Button>
+        <header className="h-16 border-b bg-card/50 backdrop-blur sticky top-0 z-30">
+          <div className="h-full flex items-center justify-between px-6">
+            <h1 className="text-xl font-semibold">Admin Panel</h1>
+
+            <div className="flex items-center gap-4">
+              {/* Quick actions */}
+              <Button variant="outline" size="sm" className="hidden md:flex gap-2">
+                <Globe className="h-4 w-4" />
+                View Site
+              </Button>
+              
+              {/* Notifications */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Bell className="h-5 w-5" />
+                    {notifications > 0 && (
+                      <span className="absolute top-0 right-0 h-4 w-4 text-[10px] font-medium flex items-center justify-center bg-destructive text-destructive-foreground rounded-full">
+                        {notifications}
+                      </span>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-80">
+                  <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {/* Add notification items here */}
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* User menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user?.avatar} alt={user?.username} />
+                      <AvatarFallback>{user?.username?.[0]?.toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>Role: {user?.role}</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
         </header>
-        
+
         {/* Page content */}
-        <main className="flex-1 overflow-auto p-4 md:p-6">
-          {children}
-        </main>
+        <main className="p-6">{children}</main>
       </div>
-      
-      {/* Overlay for mobile sidebar */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        ></div>
-      )}
     </div>
-  );
-};
-
-interface NavItemProps {
-  to: string;
-  icon: React.ReactNode;
-  label: string;
-  isActive?: boolean;
-}
-
-const NavItem = ({ to, icon, label, isActive }: NavItemProps) => {
-  return (
-    <Link
-      to={to}
-      className={cn(
-        "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-        isActive
-          ? "bg-[#44A675] text-white"
-          : "text-gray-300 hover:bg-[#2D3748] hover:text-white"
-      )}
-    >
-      {icon}
-      {label}
-    </Link>
   );
 };

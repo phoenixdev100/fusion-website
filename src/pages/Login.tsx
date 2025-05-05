@@ -7,7 +7,8 @@ import { toast } from 'sonner';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Gamepad2, ShieldCheck, Eye, EyeOff, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { authService } from '@/api/auth';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '@/components/ui/use-toast';
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,21 +23,19 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
+  const { login, isAuthenticated, user } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
-    // If already logged in, redirect to dashboard
-    const userStr = localStorage.getItem('fusion_user');
-    if (userStr) {
-      try {
-        const user = JSON.parse(userStr);
-        if (user.role === 'admin') {
-          navigate('/admin', { replace: true });
-        } else {
-          navigate('/user/dashboard', { replace: true });
-        }
-      } catch {}
+    // If already logged in, redirect based on role
+    if (isAuthenticated && user) {
+      if (user.role === 'admin') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/user/dashboard', { replace: true });
+      }
     }
-  }, [navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   const validateForm = () => {
     const newErrors = {
@@ -72,38 +71,31 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     
     if (!validateForm()) {
       return;
     }
-
+    
     setIsLoading(true);
 
     try {
-      const response = await authService.login({
-        email: formData.email.trim(),
-        password: formData.password.trim()
-      });
-      
-      if (response.success) {
-        toast.success("Login successful!");
-        if (response.user) {
-          localStorage.setItem('fusion_user', JSON.stringify(response.user));
-          // Redirect based on role
-          if (response.user.role === 'admin') {
-            navigate('/admin', { replace: true });
-          } else {
-            navigate('/user/dashboard', { replace: true });
-          }
-        }
-      } else {
-        toast.error(response.error || "Invalid credentials");
+      const success = await login(formData.email.trim(), formData.password.trim());
+      if (!success) {
+        toast({
+          title: 'Login Failed',
+          description: 'Please check your email and password',
+          variant: 'destructive',
+        });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      toast.error("An error occurred while logging in. Please try again.");
+      toast({
+        title: 'Error',
+        description: error.response?.data?.message || 'An error occurred during login',
+        variant: 'destructive',
+      });
     } finally {
       setIsLoading(false);
     }

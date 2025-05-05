@@ -379,7 +379,7 @@ const ServerInfo = () => {
                         <h3 className="text-sm font-medium mb-2">Total Players</h3>
                         <div className="text-2xl sm:text-3xl font-bold">
                           {duelsStats.players.online + pvpStats.players.online + lifestealStats.players.online}/
-                          {duelsStats.players.max + pvpStats.players.max + lifestealStats.players.max}
+                          {(duelsStats.players.online + pvpStats.players.online + lifestealStats.players.online)+1}
                         </div>
                       </div>
                       <div className="bg-black/30 p-4 sm:p-6 rounded-2xl">
@@ -433,7 +433,7 @@ const ServerInfo = () => {
                                 </div>
                       <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl">
                         <span className="text-gray-400">Players</span>
-                        <span>{duelsStats.players.online}/{duelsStats.players.max}</span>
+                        <span>{duelsStats.players.online}/{(duelsStats.players.online)+1}</span>
                                 </div>
                       <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl">
                         <span className="text-gray-400">Performance</span>
@@ -468,7 +468,7 @@ const ServerInfo = () => {
                             </div>
                       <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl">
                         <span className="text-gray-400">Players</span>
-                        <span>{pvpStats.players.online}/{pvpStats.players.max}</span>
+                        <span>{pvpStats.players.online}/{(pvpStats.players.online)+1}</span>
                             </div>
                       <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl">
                         <span className="text-gray-400">Performance</span>
@@ -503,7 +503,7 @@ const ServerInfo = () => {
                       </div>
                       <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl">
                         <span className="text-gray-400">Players</span>
-                        <span>{lifestealStats.players.online}/{lifestealStats.players.max}</span>
+                        <span>{lifestealStats.players.online}/{(lifestealStats.players.online)+1}</span>
             </div>
                       <div className="flex items-center justify-between p-4 bg-black/20 rounded-2xl">
                         <span className="text-gray-400">Performance</span>
