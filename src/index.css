@@ -12,6 +12,11 @@
   src: url('/fonts/MinecraftAlt.otf') format('opentype');
 }
 
+@font-face {
+  font-family: 'Arial-Rounded-MT-Bold';
+  src: url('/fonts/ArialRoundedMTBold.ttf') format('truetype');
+}
+
 @layer base {
   :root {
     --background: 0 0% 3.9%;
