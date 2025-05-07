@@ -147,7 +147,7 @@ const events: CommunityEvent[] = [
 ];
 
 const discordFeatures: FeatureItem[] = [
-  { icon: Users, text: "10,000+ members and growing daily" },
+  { icon: Users, text: "6,000+ members and growing daily" },
   { icon: MessageCircle, text: "Active chat channels for every game mode" },
   { icon: Calendar, text: "Weekly events and giveaways" }
 ];
@@ -258,7 +258,7 @@ const Community = () => {
 
   // External links
   const DISCORD_INVITE = "https://discord.gg/wk6yJGHkKP";
-  const FORUMS_URL = "https://forums.fusionnetwork.fun";
+  const FORUMS_URL = "https://forum.fusion-network.xyz";
   const EVENTS_URL = "https://discord.gg/wk6yJGHkKP";
 
   return (
@@ -291,7 +291,7 @@ const Community = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 relative">
               <div className="p-8 flex flex-col justify-center">
                 <Badge variant="secondary" className="w-fit mb-4 bg-purple-500/20 text-purple-300">JOIN OUR DISCORD</Badge>
-                <CardTitle className="text-3xl mb-6 text-white group-hover:text-purple-200 transition-colors duration-500">Connect with 10,000+ Players</CardTitle>
+                <CardTitle className="text-3xl mb-6 text-white group-hover:text-purple-200 transition-colors duration-500">Connect with 6,000+ Players</CardTitle>
                 <CardDescription className="text-lg mb-8 text-gray-300 group-hover:text-white/90 transition-colors duration-500">
                   Our Discord server is the hub for all Fusion Network activities. Get support, join events, find teammates, and stay updated on the latest server news.
                 </CardDescription>
