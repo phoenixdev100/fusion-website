@@ -89,6 +89,8 @@ module.exports = {
       fontFamily: {
         minecraft: ["Minecraft", "system-ui", "sans-serif"],
         "minecraft-alt": ["Minecraft-Alt", "system-ui", "sans-serif"],
+        "arial-rounded-mt-bold": ["Arial-Rounded-MT-Bold", "system-ui", "sans-serif"],
+        "open-sans": ["Open Sans", "system-ui", "sans-serif"],
       },
     },
   },
