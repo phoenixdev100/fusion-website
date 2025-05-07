@@ -1,16 +1,72 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronRight, Users, Diamond, Sword, Crown, Gift, Shield, Calendar, MessageSquare, Star, Trophy, Heart, Clock, Sparkles, ArrowRight, Copy, Check } from 'lucide-react';
+import { ChevronRight, Users, Diamond, Sword, Crown, Gift, Shield, Calendar, MessageSquare, Star, Trophy, Heart, Clock, Sparkles, ArrowRight, Copy, Check, X, Signal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Toaster, toast } from 'sonner';
 
 const SERVER_IP = 'fusion-network.xyz';
 
+interface ServerStatus {
+  online: boolean;
+  players: {
+    online: number;
+    max: number;
+  };
+  latency: number;
+}
+
 const Index = () => {
   const navigate = useNavigate();
   const [hasCopied, setHasCopied] = useState(false);
+  const [showConnectionModal, setShowConnectionModal] = useState(false);
+  const [serverStatus, setServerStatus] = useState<ServerStatus | null>(null);
+
+  const fetchServerStatus = async () => {
+    try {
+      const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+      const data = await response.json();
+      
+      // Start measuring time before the request
+      const startTime = performance.now();
+      
+      // Make a second request to measure actual latency
+      await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+      
+      // Calculate latency
+      const latency = Math.round(performance.now() - startTime);
+      
+      setServerStatus({
+        online: data.online || false,
+        players: {
+          online: data.players?.online || 0,
+          max: data.players?.max || 0
+        },
+        latency: latency
+      });
+    } catch (error) {
+      console.error('Failed to fetch server status:', error);
+      setServerStatus({
+        online: false,
+        players: { online: 0, max: 0 },
+        latency: 0
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (showConnectionModal) {
+      document.body.style.overflow = 'hidden';
+      fetchServerStatus();
+      // Refresh status every 30 seconds while modal is open
+      const interval = setInterval(fetchServerStatus, 30000);
+      return () => {
+        clearInterval(interval);
+        document.body.style.overflow = 'unset';
+      };
+    }
+  }, [showConnectionModal]);
 
   const handleCopyIP = async () => {
     try {
@@ -42,7 +98,7 @@ const Index = () => {
   };
 
   const handleGetStarted = () => {
-    navigate('/register');
+    setShowConnectionModal(true);
   };
 
   const handleLearnMore = () => {
@@ -84,128 +140,128 @@ const Index = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="relative min-h-screen flex items-center justify-center overflow-hidden py-16 sm:py-20 lg:py-32"
+        className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden py-8 sm:py-12 md:py-16 lg:py-32"
       >
-        {/* Minecraft-style animated background */}
+        {/* Video Background */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[url('/img/minecraft-panorama.jpg')] bg-cover bg-center animate-pan-bg"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-background"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.7)_100%)]"></div>
-          <div className="absolute inset-0 bg-[url('/img/minecraft-pattern.png')] opacity-10"></div>
-        </div>
-
-        {/* Floating particles */}
-        <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-2 h-2 bg-emerald-400/30 rounded-full"
-              initial={{ 
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                scale: Math.random() * 0.5 + 0.5
-              }}
-              animate={{
-                y: [null, -100],
-                opacity: [0, 1, 0],
-                scale: [null, Math.random() * 0.5 + 0.5]
-              }}
-              transition={{
-                duration: Math.random() * 3 + 2,
-                repeat: Infinity,
-                delay: Math.random() * 2
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="container px-4 sm:px-6 relative">
-          <motion.div 
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover scale-105"
           >
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-minecraft mb-4 sm:mb-6 animate-float text-white drop-shadow-glow">
-              Welcome to
-              <span className="block text-4xl sm:text-6xl md:text-8xl bg-gradient-to-r from-emerald-400 via-sky-400 to-purple-400 text-transparent bg-clip-text animate-gradient font-bold tracking-wide mt-2">
-                Fusion Network
+            <source src="/src/img/minecraft-cherry.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-background"></div>
+          {/* Animated Grid Background */}
+          <div 
+            className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_24px]"
+            style={{ maskImage: 'radial-gradient(circle at center, black, transparent 80%)' }}
+          ></div>
+        </div>
+
+        {/* Content Container */}
+        <div className="container px-4 sm:px-6 relative z-10">
+            <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            className="text-center max-w-5xl mx-auto"
+          >
+            {/* Main Heading */}
+          <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="relative mb-4 sm:mb-6"
+            >
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-fuchsia-500 text-lg sm:text-xl md:text-2xl lg:text-4xl mb-2 sm:mb-4 font-open-sans tracking-wide">
+                Welcome to the Next Generation
+              </span>
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl tracking-tight leading-none mb-4 sm:mb-8 whitespace-nowrap px-2 sm:px-0">
+                <span className="inline-block font-minecraft text-white font-bold mr-2 sm:mr-4">
+                  FUSION
+                </span>
+                <span className="inline-block bg-gradient-to-r from-purple-400 via-fuchsia-500 to-purple-600 text-transparent bg-clip-text font-arial-rounded-mt-bold font-bold">
+                  NETWORK
               </span>
                 </h1>
+              <div className="max-w-3xl mx-auto px-4 sm:px-6">
+                <p className="text-base sm:text-lg md:text-xl text-gray-300 font-open-sans leading-relaxed mb-6 sm:mb-8">
+                  Experience Minecraft like never before with our unique game modes and vibrant community
+                </p>
+              </div>
+            </motion.div>
 
-            <motion.p 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1, duration: 0.5 }}
-              className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-gray-200 font-minecraft-alt animate-fade-in px-4"
-            >
-              Join thousands of players in an epic Minecraft adventure!
-            </motion.p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8 sm:mb-12 px-4">
+            {/* CTA Buttons */}
               <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative group w-full sm:w-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-8 sm:mb-16 px-4 sm:px-0"
               >
                 <Button 
                   size="lg" 
                   onClick={handleGetStarted}
-                  className="minecraft-button bg-emerald-500 hover:bg-emerald-600 text-white font-minecraft rounded-3xl px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg w-full sm:w-auto relative overflow-hidden group"
+                className="group relative w-full sm:w-auto px-6 sm:px-12 py-6 sm:py-8 text-base sm:text-lg font-minecraft rounded-xl bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 text-white transform hover:scale-105 transition-all duration-300 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Diamond className="h-5 w-5 sm:h-6 sm:w-6" />
-                    Get Started
+                <span className="relative z-10 flex items-center justify-center gap-3">
+                  <Diamond className="h-7 w-7 group-hover:rotate-180 transition-transform duration-500" />
+                  Start Your Journey
                   </span>
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-purple-600/50 to-fuchsia-600/50 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </Button>
-              </motion.div>
-
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative group w-full sm:w-auto"
-              >
                 <Button 
                   size="lg" 
                   variant="outline"
                   onClick={handleLearnMore}
-                  className="minecraft-button-outline font-minecraft rounded-3xl px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg w-full sm:w-auto relative overflow-hidden group border-2"
+                className="group relative w-full sm:w-auto px-6 sm:px-12 py-6 sm:py-8 text-base sm:text-lg font-minecraft rounded-xl border-2 border-purple-500/30 hover:border-purple-500/50 text-white transform hover:scale-105 transition-all duration-300 hover:bg-purple-500/10"
                 >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
+                <span className="relative z-10 flex items-center justify-center gap-3">
                     Learn More
-                    <ArrowRight className="h-5 w-5" />
+                  <ArrowRight className="h-7 w-7 group-hover:translate-x-2 transition-transform duration-300" />
                   </span>
                   </Button>
               </motion.div>
-            </div>
 
+            {/* Server Stats */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-3xl mx-auto px-4"
+              transition={{ delay: 0.9, duration: 0.8 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 max-w-4xl mx-auto px-4 sm:px-0"
             >
               {[
-                { icon: Users, text: "200+ Players", color: "sky-400" },
-                { icon: Sword, text: "Custom Games", color: "red-400" },
-                { icon: Crown, text: "Daily Events", color: "yellow-400" },
-                { icon: Gift, text: "Rewards", color: "purple-400" }
-              ].map((item, index) => (
+                { value: "200+", label: "Active Players", icon: Users },
+                { value: "99.9%", label: "Uptime", icon: Shield },
+                { value: "24/7", label: "Support", icon: Heart },
+                { value: "10+", label: "Custom Features", icon: Sparkles }
+              ].map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.4 + index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="bg-black/40 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-3 sm:p-6 border border-white/10 hover:border-white/20 transition-all group relative overflow-hidden"
+                  transition={{ delay: 1.2 + index * 0.1 }}
+                  className="group relative"
                 >
-                  <item.icon className={`h-6 w-6 sm:h-10 sm:w-10 mb-2 sm:mb-3 text-${item.color} mx-auto group-hover:scale-110 transition-transform`} />
-                  <p className="text-gray-200 font-minecraft-alt text-sm sm:text-base md:text-lg">{item.text}</p>
+                  <div className="relative p-4 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-purple-500/30 transition-all duration-300">
+                    <stat.icon className="h-6 w-6 text-purple-400 mb-3 mx-auto group-hover:scale-110 transition-transform duration-300" />
+                    <h3 className="text-2xl font-minecraft text-white mb-1">{stat.value}</h3>
+                    <p className="text-sm text-gray-400 font-minecraft-alt">{stat.label}</p>
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </div>
                 </motion.div>
               ))}
             </motion.div>
           </motion.div>
                 </div>
+
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(0,0,0,0.4)_100%)]"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent"></div>
+        </div>
       </motion.section>
 
       {/* Game Modes Section */}
@@ -214,7 +270,7 @@ const Index = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="py-16 sm:py-20 bg-gradient-to-b from-background to-gray-900 relative overflow-hidden"
+        className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-background to-gray-900 relative overflow-hidden"
       >
         <div className="container px-4 sm:px-6 relative">
           <motion.div
@@ -222,17 +278,17 @@ const Index = () => {
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-5xl font-minecraft text-center mb-4 text-white drop-shadow-glow">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-5xl font-minecraft text-center mb-3 sm:mb-4 text-white drop-shadow-glow">
               Game Modes
             </h2>
-            <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto font-minecraft-alt px-4">
+            <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-2xl mx-auto font-minecraft-alt px-4">
               Explore our diverse range of game modes, each offering unique challenges and adventures
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {[
               { 
                 title: "Practice PvP",
@@ -324,7 +380,7 @@ const Index = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="py-16 sm:py-20 bg-gradient-to-b from-gray-900 to-background relative overflow-hidden"
+        className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-gray-900 to-background relative overflow-hidden"
       >
         <div className="container px-4 sm:px-6">
           <motion.div
@@ -334,12 +390,12 @@ const Index = () => {
             viewport={{ once: true }}
             className="text-center mb-8 sm:mb-12"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-minecraft mb-4 text-white">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-minecraft mb-3 sm:mb-4 text-white">
               <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-transparent bg-clip-text">
                 Featured Events
               </span>
             </h2>
-            <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto font-minecraft-alt px-4">
+            <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-2xl mx-auto font-minecraft-alt px-4">
               Join our exciting community events and win amazing rewards!
             </p>
           </motion.div>
@@ -557,34 +613,28 @@ const Index = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="py-20 bg-gradient-to-b from-gray-900 to-background relative overflow-hidden"
+        className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-gray-900 to-background relative overflow-hidden"
       >
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[url('/img/community-bg.jpg')] bg-cover bg-center opacity-10"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900/80 to-background"></div>
-        </div>
-
-        <div className="container px-4 md:px-6 relative">
+        <div className="container px-4 sm:px-6 relative">
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 md:mb-16"
           >
-            <h2 className="text-3xl md:text-5xl font-minecraft text-center mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-minecraft text-center mb-3 sm:mb-4">
               <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text">
                 Join Our Community
               </span>
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto font-minecraft-alt">
+            <p className="text-sm sm:text-base md:text-lg text-gray-400 max-w-2xl mx-auto font-minecraft-alt">
               Be part of an amazing Minecraft community where friendships are forged and adventures await
             </p>
           </motion.div>
 
           {/* Community Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12 md:mb-16">
             {[
               { value: "8K+", label: "Discord Members", icon: MessageSquare, color: "indigo" },
               { value: "500+", label: "Active Players", icon: Users, color: "green" },
@@ -668,7 +718,7 @@ const Index = () => {
           </div>
 
           {/* Community Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8">
             {/* Discord Community */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -724,16 +774,16 @@ const Index = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="py-20 bg-[url('/img/stats-bg.jpg')] bg-cover bg-center relative"
+        className="py-12 sm:py-16 md:py-20 bg-[url('/img/stats-bg.jpg')] bg-cover bg-center relative"
       >
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div className="container px-4 md:px-6 relative">
+        <div className="container px-4 sm:px-6 relative">
           <motion.div 
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 md:gap-8 text-center"
           >
             {[
               { value: "200+", label: "Daily Players", color: "emerald-400" },
@@ -769,7 +819,7 @@ const Index = () => {
         whileInView={{ opacity: 1 }}
         transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="py-16 sm:py-20 bg-gradient-to-t from-background to-gray-900"
+        className="py-12 sm:py-16 md:py-20 bg-gradient-to-t from-background to-gray-900"
       >
         <div className="container px-4 sm:px-6">
           <motion.div 
@@ -779,10 +829,10 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto text-center"
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-minecraft mb-4 sm:mb-6 text-white">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-minecraft mb-3 sm:mb-4 md:mb-6 text-white">
               Ready to Join the Adventure?
             </h2>
-            <p className="text-lg sm:text-xl text-gray-300 font-minecraft-alt mb-6 sm:mb-8 px-4">
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 font-minecraft-alt mb-6 sm:mb-8 px-4">
               Connect to <span className="text-emerald-400">fusion-network.com</span> and start your journey today!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
@@ -794,10 +844,10 @@ const Index = () => {
                 <Button 
                   size="lg" 
                   onClick={handleGetStarted}
-                  className="minecraft-button bg-emerald-500 hover:bg-emerald-600 text-white font-minecraft rounded-3xl px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg w-full sm:w-auto relative overflow-hidden group"
+                  className="minecraft-button w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-minecraft rounded-2xl px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base md:text-lg relative overflow-hidden group"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Diamond className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <Diamond className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
                     Get Started
                   </span>
                 </Button>
@@ -811,11 +861,11 @@ const Index = () => {
                   size="lg" 
                   variant="outline"
                   onClick={handleLearnMore}
-                  className="minecraft-button-outline font-minecraft rounded-3xl px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg w-full sm:w-auto relative overflow-hidden group border-2"
+                  className="minecraft-button-outline w-full sm:w-auto font-minecraft rounded-2xl px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base md:text-lg relative overflow-hidden group border-2"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Learn More
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
                   </span>
                 </Button>
               </motion.div>
@@ -823,6 +873,156 @@ const Index = () => {
           </motion.div>
         </div>
       </motion.section>
+
+      {/* Connection Instructions Modal */}
+      <AnimatePresence>
+        {showConnectionModal && (
+          <>
+            <div className="fixed inset-0 flex items-center justify-center z-[100] p-2 sm:p-4 overflow-hidden">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-black/90 backdrop-blur-sm"
+                onClick={() => setShowConnectionModal(false)}
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="relative z-[101] w-full max-w-5xl mx-auto"
+              >
+                <div className="bg-[#0A0C1B]/95 border border-purple-500/20 rounded-2xl shadow-2xl overflow-hidden">
+                  <div className="relative p-4 sm:p-6 md:p-8">
+                    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+                    
+                    <button
+                      onClick={() => setShowConnectionModal(false)}
+                      className="absolute right-6 top-6 text-gray-400 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-lg"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+
+                    <div className="flex items-start gap-4 sm:gap-6 mb-6 sm:mb-8">
+                      <div className="relative">
+                        <div className="absolute -inset-1 bg-purple-500/20 rounded-lg blur-sm" />
+                        <img src="/src/img/fusion-logo.png" alt="Fusion Network" className="w-12 h-12 sm:w-16 sm:h-16 relative" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl font-minecraft text-white mb-2">Connect to Fusion Network</h2>
+                        <p className="text-sm sm:text-base md:text-lg text-gray-400 font-open-sans">Join thousands of players in unique game modes</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-black/30 rounded-xl p-4 mb-8 border border-purple-500/20">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-2 h-2 rounded-full ${serverStatus?.online ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
+                          <span className={`${serverStatus?.online ? 'text-green-400' : 'text-red-400'} font-minecraft-alt`}>
+                            {serverStatus?.online ? 'Server Online' : 'Server Offline'}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-yellow-400" />
+                            <span className="text-gray-300 font-minecraft-alt">
+                              {serverStatus?.players.online || 0} Online
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Signal className="h-4 w-4 text-emerald-400" />
+                            <span className="text-gray-300 font-minecraft-alt">
+                              {serverStatus?.latency || '---'}ms
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="flex items-start gap-4 group">
+                        <div className="relative">
+                          <div className="absolute -inset-2 bg-purple-500/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <span className="relative flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/20 text-purple-400 font-minecraft text-lg border border-purple-500/20">1</span>
+                        </div>
+                        <div className="flex-1 bg-black/20 rounded-xl p-4 border border-purple-500/10">
+                          <p className="text-white font-open-sans">
+                            Launch Minecraft and click <span className="text-purple-400 font-semibold">Multiplayer</span>, then
+                            <span className="text-purple-400 font-semibold"> Add Server</span>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4 group">
+                        <div className="relative">
+                          <div className="absolute -inset-2 bg-purple-500/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <span className="relative flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/20 text-purple-400 font-minecraft text-lg border border-purple-500/20">2</span>
+                        </div>
+                        <div className="flex-1 bg-black/20 rounded-xl p-4 border border-purple-500/10">
+                          <p className="text-white font-open-sans mb-3">Enter Server Address:</p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3 bg-black/40 rounded-lg p-3">
+                              <code className="text-purple-400 font-minecraft text-lg">{SERVER_IP}</code>
+                            </div>
+                            <Button
+                              onClick={handleCopyIP}
+                              className="bg-purple-600 hover:bg-purple-500 text-white font-minecraft py-3 px-6 rounded-lg transition-all duration-300 flex items-center gap-2"
+                            >
+                              {hasCopied ? (
+                                <>
+                                  <Check className="h-4 w-4" />
+                                  <span>Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="h-4 w-4" />
+                                  <span>Copy IP</span>
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-4">
+                        <div className="relative">
+                          <div className="absolute -inset-2 bg-purple-500/20 rounded-full blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <span className="relative flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/20 text-purple-400 font-minecraft text-lg border border-purple-500/20">
+                            <Gift className="h-5 w-5" />
+                          </span>
+                        </div>
+                        <div className="flex-1 bg-black/20 rounded-xl p-4 border border-purple-500/10">
+                          <p className="text-white font-open-sans mb-3 font-semibold">Server Features</p>
+                          <div className="grid grid-cols-2 gap-3">
+                            <div className="flex items-center gap-2 text-gray-300">
+                              <Shield className="h-4 w-4 text-purple-400" />
+                              <span className="font-open-sans text-sm">Anti-Cheat Protection</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-gray-300">
+                              <Crown className="h-4 w-4 text-purple-400" />
+                              <span className="font-open-sans text-sm">Custom Ranks</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-gray-300">
+                              <Sword className="h-4 w-4 text-purple-400" />
+                              <span className="font-open-sans text-sm">Unique Game Modes</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-gray-300">
+                              <MessageSquare className="h-4 w-4 text-purple-400" />
+                              <span className="font-open-sans text-sm">Active Community</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 };
