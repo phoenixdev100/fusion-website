@@ -1,10 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Download, 
-  Info, 
-  Package, 
   Check, 
   AlertTriangle, 
   Zap,
@@ -13,7 +9,8 @@ import {
   Shield,
   Server,
   Clock,
-  X
+  X,
+  Box
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
@@ -229,7 +226,7 @@ const RequiredMods = () => {
           <Tabs defaultValue="all" className="mb-8">
             <TabsList className="grid grid-cols-1 md:grid-cols-5 bg-black/40 border border-white/10 p-1 rounded-lg">
               <TabsTrigger value="all" className="data-[state=active]:bg-purple-500/20">
-                <Package className="w-4 h-4 mr-2" />
+                <Box className="w-4 h-4 mr-2" />
                 All Mods
               </TabsTrigger>
               <TabsTrigger value="required" className="data-[state=active]:bg-purple-500/20">

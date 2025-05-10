@@ -146,7 +146,8 @@ export const AdminLayout = ({ children }: AdminLayoutProps) => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.avatar} alt={user?.username} />
+                      {/* @ts-ignore - Avatar property might not exist on User type */}
+                      <AvatarImage src={user?.avatar || undefined} alt={user?.username || 'User'} />
                       <AvatarFallback>{user?.username?.[0]?.toUpperCase()}</AvatarFallback>
                     </Avatar>
                   </Button>

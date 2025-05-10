@@ -291,7 +291,7 @@ const Team = () => {
                               {/* Socials for MstrChief100, Spyder_xD_, and n0step_ */}
                               {(['MstrChief100', 'Spyder_xD_'].includes(member.minecraftUsername)) && (
                                 <div className="flex gap-3 justify-center mb-2 mt-1">
-                                  {mstrChiefSocials.map((social, i) => (
+                                  {mstrChiefSocials.map((social) => (
                                     <a
                                       key={social.label}
                                       href={social.url}
@@ -307,7 +307,7 @@ const Team = () => {
                               )}
                               {member.minecraftUsername === 'n0step_' && (
                                 <div className="flex gap-3 justify-center mb-2 mt-1">
-                                  {nostepSocials.map((social, i) => (
+                                  {nostepSocials.map((social) => (
                                     <a
                                       key={social.label}
                                       href={social.url}

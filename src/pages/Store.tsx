@@ -1,13 +1,8 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 
 const Store = () => {
-  const handlePurchase = (item: string, price: number) => {
-    // Redirect to external website
-    window.open('https://fusion-network.tebex.io/', '_blank', 'noopener,noreferrer');
-  };
 
   const container = {
     hidden: { opacity: 0 },

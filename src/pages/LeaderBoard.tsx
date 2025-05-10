@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Crown, Sword, Heart, Trophy, Star, Shield, Target, Crosshair, Clock, Skull, Diamond, Award } from 'lucide-react';
+import { Crown, Sword, Heart, Target, Clock, Skull, Diamond } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface PlayerStats {
@@ -31,7 +31,6 @@ const Leaderboard = () => {
   const [pvpStats, setPvpStats] = useState<ServerStats | null>(null);
   const [lifestealStats, setLifestealStats] = useState<ServerStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState('pvp');
   const [selectedStat, setSelectedStat] = useState<StatCategory>('kills');
 
@@ -43,14 +42,7 @@ const Leaderboard = () => {
     { id: 'mobkills', name: 'Mob Kills', icon: Skull }
   ] as const;
 
-  // Sample player names for more realistic data
-  const samplePlayerNames = [
-    'Technoblade', 'Dream', 'Fruitberries', 'TapL', 'WispExe',
-    'Purpled', 'TimeDeo', 'xNestorio', 'Illumina', 'Calvin',
-    'Danteh', 'Stimpy', 'Huahwi', 'Refraction', 'Cxlvxn'
-  ];
-
-  const generatePlayerStats = (playerName: string, serverType: 'pvp' | 'lifesteal', index: number) => {
+  const generatePlayerStats = (playerName: string) => {
     const now = new Date();
     return {
       username: playerName,
@@ -80,8 +72,8 @@ const Leaderboard = () => {
         return {
           name: `${serverConfig.type === 'pvp' ? 'PvP' : 'Lifesteal'} Server`,
           type: serverConfig.type,
-          players: samplePlayerNames.slice(0, 10).map((name, index) => 
-            generatePlayerStats(name, serverConfig.type, index)
+          players: ['Technoblade', 'Dream', 'Fruitberries', 'TapL', 'WispExe'].map((name) => 
+            generatePlayerStats(name)
           )
         };
       }
@@ -91,11 +83,11 @@ const Leaderboard = () => {
 
       // Generate stats for each player
       const players = onlinePlayers.length > 0 
-        ? onlinePlayers.map((playerName: string, index: number) => 
-            generatePlayerStats(playerName, serverConfig.type, index)
+        ? onlinePlayers.map((playerName: string) => 
+            generatePlayerStats(playerName)
           )
-        : samplePlayerNames.slice(0, 10).map((name, index) => 
-            generatePlayerStats(name, serverConfig.type, index)
+        : ['Technoblade', 'Dream', 'Fruitberries', 'TapL', 'WispExe'].map((name) => 
+            generatePlayerStats(name)
           );
 
       return {
@@ -109,8 +101,8 @@ const Leaderboard = () => {
       return {
         name: `${serverConfig.type === 'pvp' ? 'PvP' : 'Lifesteal'} Server`,
         type: serverConfig.type,
-        players: samplePlayerNames.slice(0, 10).map((name, index) => 
-          generatePlayerStats(name, serverConfig.type, index)
+        players: ['Technoblade', 'Dream', 'Fruitberries', 'TapL', 'WispExe'].map((name) => 
+          generatePlayerStats(name)
         )
       };
     }
@@ -120,7 +112,6 @@ const Leaderboard = () => {
     const fetchServerStats = async () => {
       try {
         setLoading(true);
-        setError(null);
         
         const servers = {
           pvp: {
@@ -148,8 +139,8 @@ const Leaderboard = () => {
           setPvpStats({
             name: 'PvP Server',
             type: 'pvp',
-            players: samplePlayerNames.slice(0, 5).map((name, i) => 
-              generatePlayerStats(name, 'pvp', i)
+            players: ['Technoblade', 'Dream', 'Fruitberries', 'TapL', 'WispExe'].map((name) => 
+              generatePlayerStats(name)
             )
           });
         }
@@ -160,16 +151,13 @@ const Leaderboard = () => {
           setLifestealStats({
             name: 'Lifesteal Server',
             type: 'lifesteal',
-            players: samplePlayerNames.slice(5, 10).map((name, i) => 
-              generatePlayerStats(name, 'lifesteal', i)
+            players: ['Technoblade', 'Dream', 'Fruitberries', 'TapL', 'WispExe'].map((name) => 
+              generatePlayerStats(name)
             )
           });
         }
-
-        setError(null);
       } catch (err) {
         console.error('Error in fetchServerStats:', err);
-        setError('Unable to fetch server statistics. Using sample data.');
       } finally {
         setLoading(false);
       }
@@ -238,20 +226,7 @@ const Leaderboard = () => {
     }
   };
 
-  const getStatIcon = (category: StatCategory) => {
-    switch (category) {
-      case 'kills':
-        return <Sword className="text-red-500" />;
-      case 'kdr':
-        return <Target className="text-purple-500" />;
-      case 'playtime':
-        return <Clock className="text-blue-500" />;
-      case 'blocks':
-        return <Diamond className="text-cyan-500" />;
-      case 'mobkills':
-        return <Skull className="text-yellow-500" />;
-    }
-  };
+
 
   const renderTopThree = (players: PlayerStats[], type: 'pvp' | 'lifesteal') => {
     const podiumOrder = [1, 0, 2]; // Display order: 2nd, 1st, 3rd

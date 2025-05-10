@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/877447472086134814/ECUlwGULSydZwEph0ogtNPTylYMeZOB-VyWRmL1eJbfWFJo89gYYKzgMsDL6noJJiOaB';
-
 export default function ApplyPage() {
   const [ign, setIgn] = useState('');
   const [reason, setReason] = useState('');
@@ -15,7 +13,13 @@ export default function ApplyPage() {
     setError('');
     setSuccess(false);
     try {
-      const res = await fetch(WEBHOOK_URL, {
+      const webhookUrl = import.meta.env.VITE_WEBHOOK_URL;
+      
+      if (!webhookUrl) {
+        throw new Error('Webhook URL is not configured.');
+      }
+      
+      const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
 import { 
   Check, 
   Clock, 
@@ -16,12 +15,8 @@ import {
   Settings, 
   Zap,
   Server,
-  Shield,
-  ExternalLink,
-  MessageSquare
+  Shield
 } from 'lucide-react';
-
-const DISCORD_URL = "https://discord.gg/wk6yJGHkKP"; // Replace with your actual Discord URL
 
 const versions = [
   {

@@ -2,8 +2,8 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
-  ShieldIcon, AlertCircle, MessageSquare, Home, Store, Heart, Users, 
-  Swords, Gem, Crown, Ban, Crosshair, Scroll, Coins, Gift, Hammer
+  AlertCircle, MessageSquare, Home, Users, 
+  Swords, Crown, Ban, Scroll, Coins, Gift, Hammer
 } from 'lucide-react';
 
 const Rules = () => {
@@ -166,7 +166,7 @@ const Rules = () => {
                 "Respect rank restrictions and limits"
               ]
             }
-          ].map((section, index) => (
+          ].map((section) => (
             <motion.div key={section.title} variants={item} className="group">
               <Card className="relative overflow-hidden rounded-xl backdrop-blur-sm bg-black/40 border-0 hover:shadow-2xl transition-all duration-300">
                 <div className="absolute inset-0 bg-gradient-to-br from-black to-transparent opacity-50" />

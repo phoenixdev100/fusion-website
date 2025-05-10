@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
@@ -11,15 +10,13 @@ import {
   BookIcon, 
   MessageSquareIcon, 
   ShieldIcon,
-  AlertCircleIcon,
   UserIcon,
   ServerIcon,
   ShoppingBagIcon,
   HeartIcon,
   ExternalLink
 } from 'lucide-react';
-import { toast } from 'sonner';
-import { useState } from 'react';
+
 
 interface FAQItem {
   question: string;
@@ -70,19 +67,6 @@ const faqItems: FAQItem[] = [
 ];
 
 const Support = () => {
-  const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast.success('Your support ticket has been submitted!', {
-      description: 'We will get back to you within 24 hours.'
-    });
-    setEmail('');
-    setSubject('');
-    setMessage('');
-  };
 
   const container = {
     hidden: { opacity: 0 },
