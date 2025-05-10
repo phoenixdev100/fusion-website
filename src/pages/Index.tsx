@@ -433,7 +433,7 @@ const Index = () => {
                 className="group relative"
               >
                 <div className="relative overflow-hidden rounded-3xl bg-gray-800/50 border border-gray-700/50 backdrop-blur-sm transition-all duration-300 hover:border-gray-600/50 hover:bg-gray-800/70">
-                  <div className="aspect-[16/9] relative">
+                  <div className="aspect-[16/9] relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent z-10" />
                     <img
                       src={event.image}
