@@ -41,14 +41,8 @@ const teamMembers: TeamMember[] = [
     minecraftUsername: "Spyder_xD_"
   },
   {
-    name: "Laggpixel",
-    role: "Lead Developer",
-    category: "development",
-    minecraftUsername: "Laggpixel"
-  },
-  {
     name: "n0step_",
-    role: "Developer",
+    role: "Lead Developer & Developer Manager",
     category: "development",
     minecraftUsername: "n0step_"
   },
@@ -203,6 +197,15 @@ const mstrChiefSocials = [
   }
 ];
 
+const nostepSocials = [
+  {
+    icon: <GithubIcon className="h-5 w-5" />, url: 'https://github.com/krushna06', label: 'GitHub'
+  },
+  {
+    icon: <FaGlobe className="h-5 w-5" />, url: 'https://nostep.xyz', label: 'Website'
+  }
+];
+
 const Team = () => {
   const categories = ['ownership', 'development', 'moderation', 'helper'];
 
@@ -285,10 +288,26 @@ const Team = () => {
                               <p className="text-sm text-gray-400 group-hover:text-gray-300 transition-colors duration-300 mb-3">
                                 {member.role}
                               </p>
-                              {/* Socials for MstrChief100 only */}
-                              {['MstrChief100', 'Spyder_xD_'].includes(member.minecraftUsername) && (
+                              {/* Socials for MstrChief100, Spyder_xD_, and n0step_ */}
+                              {(['MstrChief100', 'Spyder_xD_'].includes(member.minecraftUsername)) && (
                                 <div className="flex gap-3 justify-center mb-2 mt-1">
                                   {mstrChiefSocials.map((social, i) => (
+                                    <a
+                                      key={social.label}
+                                      href={social.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-2 rounded-full bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 hover:text-white transition-colors duration-200 shadow"
+                                      title={social.label}
+                                    >
+                                      {social.icon}
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
+                              {member.minecraftUsername === 'n0step_' && (
+                                <div className="flex gap-3 justify-center mb-2 mt-1">
+                                  {nostepSocials.map((social, i) => (
                                     <a
                                       key={social.label}
                                       href={social.url}
