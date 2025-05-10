@@ -294,7 +294,7 @@ const Index = () => {
                 title: "Practice PvP",
                 subtitle: "Sharpen Your Skills", 
                 color: "emerald-400",
-                image: "/src/img/mc-pvp.avif",
+                image: "/img/mc-pvp.avif",
                 description: "Jump into fast-paced PvP arenas to practice and improve your combat skills against other players.",
                 features: ["Multiple Arenas", "ELO Ranking", "Instant Queue"]
               },
@@ -302,7 +302,7 @@ const Index = () => {
                 title: "Lifesteal",
                 subtitle: "Survive & Conquer", 
                 color: "red-400",
-                image: "/src/img/mc-ls.jpg",
+                image: "/img/mc-ls.jpg",
                 description: "Experience the thrill of Lifesteal SMP where every kill makes you stronger and every death is a setback.",
                 features: ["Heart Stealing", "Clans & Alliances", "Custom Events"]
               },
@@ -310,7 +310,7 @@ const Index = () => {
                 title: "Duels",
                 subtitle: "1v1 Battles", 
                 color: "purple-400",
-                image: "/src/img/mc-duels.jpg",
+                image: "/img/mc-duels.jpg",
                 description: "Challenge friends or rivals to intense 1v1 duels with custom kits and fair matchmaking.",
                 features: ["Custom Kits", "Fair Matchmaking", "Leaderboards"]
               }
@@ -406,7 +406,7 @@ const Index = () => {
                 title: "Weekly PvP Tournament",
                 date: "Every Saturday",
                 prize: "50,000 Coins",
-                image: "/src/img/mc-tournament.jpg",
+                image: "/img/mc-tournament.jpg",
                 icon: Sword
               },
               {
@@ -420,7 +420,7 @@ const Index = () => {
                 title: "Treasure Hunt",
                 date: "This Weekend",
                 prize: "Rare Items",
-                image: "/src/img/mc-treasure.png",
+                image: "/img/mc-treasure.png",
                 icon: Diamond
               }
             ].map((event, index) => (
@@ -906,7 +906,7 @@ const Index = () => {
                     <div className="flex items-start gap-4 sm:gap-6 mb-6 sm:mb-8">
                       <div className="relative">
                         <div className="absolute -inset-1 bg-purple-500/20 rounded-lg blur-sm" />
-                        <img src="/src/img/fusion-logo.png" alt="Fusion Network" className="w-12 h-12 sm:w-16 sm:h-16 relative" />
+                        <img src="/img/fusion-logo.png" alt="Fusion Network" className="w-12 h-12 sm:w-16 sm:h-16 relative" />
                       </div>
                       <div>
                         <h2 className="text-xl sm:text-2xl md:text-3xl font-minecraft text-white mb-2">Connect to Fusion Network</h2>

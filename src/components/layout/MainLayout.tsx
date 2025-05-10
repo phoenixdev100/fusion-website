@@ -64,7 +64,7 @@ export function MainLayout({ children, className }: MainLayoutProps) {
             <div className="flex items-center gap-2 sm:gap-3">
               <Link to="/" className="flex items-center gap-2 sm:gap-3 font-semibold group">
                 <img 
-                  src="/src/img/fusion-logo.png" 
+                  src="/img/fusion-logo.png" 
                   alt="Fusion Network" 
                   className="h-8 sm:h-10 w-auto transform transition-transform duration-200 group-hover:scale-105"
                 />
@@ -219,7 +219,7 @@ export function MainLayout({ children, className }: MainLayoutProps) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <Link to="/" className="flex items-center gap-2">
-                <img src="/src/img/fusion-logo.png" alt="Fusion Network" className="h-8 w-auto" />
+                <img src="/img/fusion-logo.png" alt="Fusion Network" className="h-8 w-auto" />
                 <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-purple-600">
                   FUSION NETWORK
                 </span>
