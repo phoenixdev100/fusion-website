@@ -135,43 +135,11 @@ export function MainLayout({ children, className }: MainLayoutProps) {
 
             {/* Desktop Auth/Profile Buttons */}
             <div className="hidden md:flex items-center gap-2">
-              {isAuthenticated ? (
-                <div className="relative group">
-                  <button
-                    className="flex items-center gap-2 focus:outline-none"
-                  >
-                    <Avatar>
-                      <AvatarFallback>
-                        <UserCircle className="h-8 w-8 text-purple-400" />
-                      </AvatarFallback>
-                    </Avatar>
-                  </button>
-                  <div className="absolute right-0 mt-2 w-40 rounded-xl bg-[#1A1D24] border border-white/10 shadow-lg py-2 z-50 hidden group-focus-within:block group-hover:block">
-                    <Link to={user?.role === 'admin' ? '/admin' : '/user/dashboard'} className="block px-4 py-2 text-sm hover:bg-purple-500/10">Profile</Link>
-                    <button
-                      onClick={() => { logout(); navigate('/'); }}
-                      className="w-full text-left px-4 py-2 text-sm hover:bg-purple-500/10 flex items-center gap-2"
-                    >
-                      <LogOut className="h-4 w-4" /> Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  <Link to="/login">
-                    <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-purple-500/10 rounded-full px-3 py-1.5">
-                      <LogIn className="h-4 w-4 mr-1" />
-                      Log in
-                    </Button>
-                  </Link>
-                  <Link to="/register">
-                    <Button className="bg-purple-600 hover:bg-purple-700 rounded-full px-3 py-1.5 transition-colors duration-200">
-                      <UserPlus className="h-4 w-4 mr-1" />
-                      Sign up
-                    </Button>
-                  </Link>
-                </>
-              )}
+              <Link to="/apply">
+                <Button className="bg-purple-600 hover:bg-purple-700 rounded-full px-3 py-1.5 transition-colors duration-200">
+                  Apply Now
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -231,38 +199,11 @@ export function MainLayout({ children, className }: MainLayoutProps) {
               
               {/* Mobile Auth/Profile Buttons */}
               <div className="pt-4 space-y-2 border-t border-white/10">
-                {isAuthenticated ? (
-                  <>
-                    <Link to={user?.role === 'admin' ? '/admin' : '/user/dashboard'} onClick={() => setIsMenuOpen(false)} className="block">
-                      <Button variant="outline" className="w-full bg-transparent border-purple-500/30 text-purple-400 hover:bg-purple-500/10 rounded-full flex items-center gap-2">
-                        <UserCircle className="h-4 w-4 mr-2" />
-                        Profile
-                      </Button>
-                    </Link>
-                    <Button
-                      onClick={() => { logout(); setIsMenuOpen(false); navigate('/'); }}
-                      className="w-full bg-purple-600 hover:bg-purple-700 rounded-full flex items-center gap-2"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Link to="/login" onClick={() => setIsMenuOpen(false)} className="block">
-                      <Button variant="outline" className="w-full bg-transparent border-purple-500/30 text-purple-400 hover:bg-purple-500/10 rounded-full">
-                        <LogIn className="h-4 w-4 mr-2" />
-                        Log in
-                      </Button>
-                    </Link>
-                    <Link to="/register" onClick={() => setIsMenuOpen(false)} className="block">
-                      <Button className="w-full bg-purple-600 hover:bg-purple-700 rounded-full">
-                        <UserPlus className="h-4 w-4 mr-2" />
-                        Sign up
-                      </Button>
-                    </Link>
-                  </>
-                )}
+                <Link to="/apply" onClick={() => setIsMenuOpen(false)} className="block">
+                  <Button className="w-full bg-purple-600 hover:bg-purple-700 rounded-full">
+                    Apply Now
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

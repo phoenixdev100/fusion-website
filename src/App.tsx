@@ -25,6 +25,7 @@ import SupportedVersions from "./pages/SupportedVersions";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Team from "./pages/Team";
+import ApplyPage from "./pages/apply";
 
 // Protected Pages
 import UserDashboard from "./pages/user/Dashboard";
@@ -59,6 +60,7 @@ const App = () => (
                 <Route path="community" element={<Community />} />
                 <Route path="team" element={<Team />} />
                 <Route path="support" element={<Support />} />
+                <Route path="apply" element={<ApplyPage />} />
                 <Route path="vote" element={<Vote />} />
                 <Route path="required-mods" element={<RequiredMods />} />
                 <Route path="versions" element={<SupportedVersions />} />
