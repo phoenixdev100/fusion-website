@@ -408,7 +408,7 @@ const Index = () => {
                 title: "Build Competition",
                 date: "Sunday Special",
                 prize: "Exclusive Ranks",
-                image: "/src/img/mc-build.avif",
+                image: "/img/mc-build.avif",
                 icon: Trophy
               },
               {
@@ -631,10 +631,10 @@ const Index = () => {
           {/* Community Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-12 md:mb-16">
             {[
-              { value: "8K+", label: "Discord Members", icon: MessageSquare, color: "indigo" },
-              { value: "500+", label: "Active Players", icon: Users, color: "green" },
-              { value: "1000+", label: "Projects Built", icon: Trophy, color: "yellow" },
-              { value: "50+", label: "Events Monthly", icon: Calendar, color: "pink" }
+              { value: "6K+", label: "Discord Members", icon: MessageSquare, color: "indigo" },
+              { value: "200+", label: "Active Players", icon: Users, color: "green" },
+              { value: "100+", label: "Projects Built", icon: Trophy, color: "yellow" },
+              { value: "10+", label: "Events Monthly", icon: Calendar, color: "pink" }
             ].map((stat, index) => (
               <motion.div
                 key={index}
