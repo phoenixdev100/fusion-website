@@ -151,7 +151,7 @@ const Index = () => {
             playsInline
             className="absolute inset-0 w-full h-full object-cover scale-105"
           >
-            <source src="/src/img/minecraft-cherry.mp4" type="video/mp4" />
+            <source src="/img/minecraft-cherry.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-background"></div>
           {/* Animated Grid Background */}
