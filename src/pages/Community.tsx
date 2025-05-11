@@ -258,7 +258,7 @@ const Community = () => {
 
   // External links
   const DISCORD_INVITE = "https://discord.gg/wk6yJGHkKP";
-  const FORUMS_URL = "https://forum.fusion-network.xyz";
+  const FORUMS_URL = "https://forums.fusion-network.xyz";
   const EVENTS_URL = "https://discord.gg/wk6yJGHkKP";
 
   return (
