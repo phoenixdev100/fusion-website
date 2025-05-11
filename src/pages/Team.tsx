@@ -42,7 +42,7 @@ const teamMembers: TeamMember[] = [
   },
   {
     name: "n0step_",
-    role: "Lead Developer & Developer Manager",
+    role: "Development Manager",
     category: "development",
     minecraftUsername: "n0step_"
   },
@@ -63,6 +63,12 @@ const teamMembers: TeamMember[] = [
     role: "Developer",
     category: "development",
     minecraftUsername: "airzz_"
+  },
+  {
+    name: "JimSpecter",
+    role: "Developer",
+    category: "development",
+    minecraftUsername: "JimSpecter"
   },
   // Moderation Team
   {
