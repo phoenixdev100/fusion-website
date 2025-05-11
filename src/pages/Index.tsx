@@ -154,11 +154,6 @@ const Index = () => {
             <source src="/img/minecraft-cherry.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-background"></div>
-          {/* Animated Grid Background */}
-          <div 
-            className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:14px_24px]"
-            style={{ maskImage: 'radial-gradient(circle at center, black, transparent 80%)' }}
-          ></div>
         </div>
 
         {/* Content Container */}
