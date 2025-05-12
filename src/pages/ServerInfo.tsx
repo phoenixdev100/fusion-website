@@ -691,14 +691,14 @@ const ServerInfo = () => {
                               </div>
                             </motion.div>
                           ))}
-                          {duelsStats.players.online > 12 && (
+                          {duelsStats.players.online > 11 && (
                             <motion.div
                               initial={{ opacity: 0, scale: 0.9 }}
                               animate={{ opacity: 1, scale: 1 }}
                               className="bg-black/30 p-3 rounded-xl border border-gray-800 hover:border-emerald-500/50 transition-all duration-300 flex items-center justify-center"
                             >
                               <div className="text-gray-400">
-                                +{duelsStats.players.online - Math.min(duelsStats.players.list.length, 12)} more
+                                +{duelsStats.players.online - Math.min(duelsStats.players.list.length, 11)} more
                               </div>
                             </motion.div>
                           )}
@@ -717,7 +717,7 @@ const ServerInfo = () => {
                         </span>
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                          {pvpStats.players.list.slice(0, 12).map((player, index) => (
+                          {pvpStats.players.list.slice(0, 11).map((player, index) => (
                             <motion.div
                               key={`pvp-${player.name}-${index}`}
                               initial={{ opacity: 0, scale: 0.9 }}
@@ -738,14 +738,14 @@ const ServerInfo = () => {
                               </div>
                             </motion.div>
                           ))}
-                          {pvpStats.players.online > 12 && (
+                          {pvpStats.players.online > 11 && (
                             <motion.div
                               initial={{ opacity: 0, scale: 0.9 }}
                               animate={{ opacity: 1, scale: 1 }}
                               className="bg-black/30 p-3 rounded-xl border border-gray-800 hover:border-red-500/50 transition-all duration-300 flex items-center justify-center"
                             >
                               <div className="text-gray-400">
-                                +{pvpStats.players.online - Math.min(pvpStats.players.list.length, 12)} more
+                                +{pvpStats.players.online - Math.min(pvpStats.players.list.length, 11)} more
                               </div>
                             </motion.div>
                           )}
@@ -764,7 +764,7 @@ const ServerInfo = () => {
                         </span>
                         </h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                          {lifestealStats.players.list.slice(0, 12).map((player, index) => (
+                          {lifestealStats.players.list.slice(0, 11).map((player, index) => (
                             <motion.div
                               key={`lifesteal-${player.name}-${index}`}
                               initial={{ opacity: 0, scale: 0.9 }}
@@ -785,14 +785,14 @@ const ServerInfo = () => {
                               </div>
                             </motion.div>
                           ))}
-                          {lifestealStats.players.online > 12 && (
+                          {lifestealStats.players.online > 11 && (
                             <motion.div
                               initial={{ opacity: 0, scale: 0.9 }}
                               animate={{ opacity: 1, scale: 1 }}
                               className="bg-black/30 p-3 rounded-xl border border-gray-800 hover:border-blue-500/50 transition-all duration-300 flex items-center justify-center"
                             >
                               <div className="text-gray-400">
-                                +{lifestealStats.players.online - Math.min(lifestealStats.players.list.length, 12)} more
+                                +{lifestealStats.players.online - Math.min(lifestealStats.players.list.length, 11)} more
                               </div>
                             </motion.div>
                           )}
