@@ -32,11 +32,8 @@ export default function ApplyPage() {
     'Partner',
     'Donator',
     'Builder',
-    'Helper',
-    'Moderator',
-    'Admin',
-    'Developer',
-    'Manager'
+    'Staff',
+    'Developer'
   ];
   
   // List of timezones for dropdown - sorted by GMT/UTC offset
@@ -728,7 +725,7 @@ export default function ApplyPage() {
                   name="additionalInfo"
                   value={formData.additionalInfo}
                   onChange={handleChange}
-                  placeholder="Anything else you'd like us to know about you?"
+                  placeholder="Anything else you'd like us to know about you? (socials, youtube links, builds made or any relevent info, etc.)"
                 />
               </div>
             </div>
