@@ -259,6 +259,222 @@ const Index = () => {
         </div>
       </motion.section>
 
+      {/* News & Updates Section */}
+      <motion.section
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true }}
+        className="py-12 sm:py-16 md:py-20 relative overflow-hidden"
+      >
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-background z-0"></div>
+        <div className="absolute inset-0 bg-[url('/img/news-bg-pattern.png')] bg-repeat opacity-5 z-0"></div>
+        
+        {/* Animated Particles */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          {[...Array(20)].map((_, i) => (
+            <motion.div 
+              key={i}
+              className="absolute w-1 h-1 rounded-full bg-blue-400 opacity-70"
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                y: [0, Math.random() * -100 - 50],
+                opacity: [0.7, 0],
+                scale: [1, Math.random() * 2 + 0.5]
+              }}
+              transition={{
+                duration: Math.random() * 5 + 5,
+                repeat: Infinity,
+                repeatType: "loop",
+                ease: "linear",
+                delay: Math.random() * 5
+              }}
+            />
+          ))}
+        </div>
+        
+        <div className="container px-4 sm:px-6 relative z-10">
+          {/* Section Header with Enhanced Animation */}
+          <motion.div
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-10 sm:mb-16"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              viewport={{ once: true }}
+              className="inline-block mb-3"
+            >
+              <div className="relative inline-block">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg blur-xl opacity-30 animate-pulse"></div>
+                <h2 className="relative text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-minecraft text-center mb-3 sm:mb-4 text-white drop-shadow-glow">
+                  <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500 text-transparent bg-clip-text">
+                    News & Updates
+                  </span>
+                </h2>
+              </div>
+            </motion.div>
+            <motion.p 
+              initial={{ y: 20, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto font-minecraft-alt px-4"
+            >
+              Stay informed about the latest server updates and announcements
+            </motion.p>
+            
+            {/* Decorative Line */}
+            <motion.div 
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              viewport={{ once: true }}
+              className="h-px w-24 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto mt-6"
+            />
+          </motion.div>
+
+          {/* Featured News Grid with Enhanced Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 max-w-7xl mx-auto">
+            {[
+              {
+                title: "New Lifesteal Season",
+                subtitle: "Season 5 Launch", 
+                color: "blue",
+                date: "May 10, 2025",
+                image: "/img/mc-ls.jpg",
+                description: "Get ready for an epic new lifesteal season with custom enchants, heart crystals, and special events.",
+                features: ["Custom Enchants", "Heart Crystals", "New Map"]
+              },
+              {
+                title: "Weekend Events",
+                subtitle: "Join the Fun", 
+                color: "green",
+                date: "May 5, 2025",
+                image: "/img/mc-tournament.jpg",
+                description: "Check out our action-packed weekend events schedule including tournaments with exclusive rewards.",
+                features: ["PvP Tournaments", "Build Competitions", "Treasure Hunts"]
+              },
+              {
+                title: "Server Upgrades",
+                subtitle: "Technical Update", 
+                color: "purple",
+                date: "April 28, 2025",
+                image: "/img/mc-server.jpg",
+                description: "We've upgraded our server hardware for better performance and stability across all game modes.",
+                features: ["Reduced Lag", "Better Stability", "Faster Response"]
+              }
+            ].map((news, index) => {
+              // Define color variations based on the base color
+              type ColorKey = 'blue' | 'green' | 'purple';
+              
+              const colorMap: Record<ColorKey, {
+                light: string;
+                medium: string;
+                dark: string;
+                glow: string;
+              }> = {
+                blue: {
+                  light: "blue-400",
+                  medium: "blue-500",
+                  dark: "blue-600",
+                  glow: "59,130,246"
+                },
+                green: {
+                  light: "emerald-400",
+                  medium: "emerald-500",
+                  dark: "emerald-600",
+                  glow: "52,211,153"
+                },
+                purple: {
+                  light: "purple-400",
+                  medium: "purple-500",
+                  dark: "purple-600",
+                  glow: "168,85,247"
+                }
+              };
+              
+              const colors = colorMap[news.color as ColorKey];
+              
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + index * 0.2, duration: 0.7 }}
+                  viewport={{ once: true }}
+                  className="group"
+                >
+                  <div className={`relative rounded-3xl overflow-hidden bg-black/40 backdrop-blur-sm border border-${colors.light}/20 hover:border-${colors.light}/40 transition-all duration-500 h-full`}>
+                    {/* Glow Effect on Hover */}
+                    <div className={`absolute -inset-0.5 bg-${colors.medium}/0 group-hover:bg-${colors.medium}/20 rounded-3xl blur opacity-0 group-hover:opacity-100 transition-all duration-700 group-hover:duration-200`}></div>
+                    
+                    {/* Card Content */}
+                    <div className="relative h-full">
+                      {/* Image Header */}
+                      <div className="h-56 sm:h-64 overflow-hidden relative">
+                        <img 
+                          src={news.image} 
+                          alt={news.title} 
+                          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-500"></div>
+                        
+                        {/* Date Badge */}
+                        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-${colors.light}/30 text-${colors.light} text-xs font-minecraft-alt">
+                          {news.date}
+                        </div>
+                        
+                        {/* Title Overlay */}
+                        <div className="absolute inset-x-0 bottom-0 p-6 text-left transform transition-transform duration-500">
+                          <p className={`text-${colors.light} font-minecraft mb-1 text-sm sm:text-base`}>{news.subtitle}</p>
+                          <h3 className="text-2xl sm:text-3xl font-minecraft text-white mb-2 group-hover:text-${colors.light} transition-colors duration-300">{news.title}</h3>
+                        </div>
+                      </div>
+                      
+                      {/* Content Area */}
+                      <div className="p-6">
+                        <p className="text-gray-300 font-minecraft-alt mb-5 line-clamp-2">
+                          {news.description}
+                        </p>
+                        
+                        {/* Feature List */}
+                        <ul className="space-y-2.5">
+                          {news.features.map((feature, i) => (
+                            <motion.li 
+                              key={i} 
+                              initial={{ opacity: 0, x: -10 }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.5 + i * 0.1, duration: 0.5 }}
+                              viewport={{ once: true }}
+                              className="flex items-center gap-3 text-gray-400 group-hover:text-gray-300 transition-colors duration-300"
+                            >
+                              <div className={`w-1.5 h-1.5 rounded-full bg-${colors.light} group-hover:w-2 group-hover:h-2 transition-all duration-300`} />
+                              <span className="font-minecraft-alt text-sm">{feature}</span>
+                            </motion.li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      {/* Animated Highlight Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none"></div>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </motion.section>
+
       {/* Game Modes Section */}
       <motion.section 
         initial={{ opacity: 0 }}
@@ -449,72 +665,7 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* News & Updates Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ once: true }}
-        className="py-16 sm:py-20 bg-gradient-to-b from-gray-900 to-background relative overflow-hidden"
-      >
-        <div className="container px-4 sm:px-6">
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 sm:mb-12"
-          >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-minecraft mb-4">
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-500 text-transparent bg-clip-text">
-                News & Updates
-              </span>
-            </h2>
-            <p className="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto font-minecraft-alt px-4">
-              Stay informed about the latest server updates and announcements
-            </p>
-          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-4xl mx-auto">
-            {[
-              {
-                title: "New Lifesteal Season",
-                date: "15 day ago",
-                description: "Get ready for an epic new lifesteal season with custom enchants and more!",
-                icon: Sparkles
-              },
-              {
-                title: "Weekend Event Schedule",
-                date: "1 week ago",
-                description: "Check out our action-packed weekend events schedule for this month.",
-                icon: Calendar
-              }
-            ].map((news, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 + index * 0.1 }}
-                viewport={{ once: true }}
-                className="group cursor-pointer"
-              >
-                <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700/50 hover:border-blue-500/50 transition-all duration-300">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg bg-blue-500/10 text-blue-400">
-                      <news.icon className="h-6 w-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-minecraft text-white mb-2">{news.title}</h3>
-                      <p className="text-gray-400 font-minecraft-alt mb-2">{news.description}</p>
-                      <p className="text-sm text-gray-500">{news.date}</p>
-                </div>
-              </div>
-            </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
 
       {/* Server Features Section */}
       <motion.section
@@ -808,66 +959,7 @@ const Index = () => {
         </div>
       </motion.section>
 
-      {/* Call to Action */}
-      <motion.section 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ once: true }}
-        className="py-12 sm:py-16 md:py-20 bg-gradient-to-t from-background to-gray-900"
-      >
-        <div className="container px-4 sm:px-6">
-          <motion.div 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-minecraft mb-3 sm:mb-4 md:mb-6 text-white">
-              Ready to Join the Adventure?
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-gray-300 font-minecraft-alt mb-6 sm:mb-8 px-4">
-              Connect to <span className="text-emerald-400">fusion-network.com</span> and start your journey today!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative group w-full sm:w-auto"
-              >
-                <Button 
-                  size="lg" 
-                  onClick={handleGetStarted}
-                  className="minecraft-button w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-white font-minecraft rounded-2xl px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base md:text-lg relative overflow-hidden group"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <Diamond className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
-                    Get Started
-                  </span>
-                </Button>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="relative group w-full sm:w-auto"
-              >
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={handleLearnMore}
-                  className="minecraft-button-outline w-full sm:w-auto font-minecraft rounded-2xl px-6 sm:px-8 py-4 sm:py-6 text-sm sm:text-base md:text-lg relative overflow-hidden group border-2"
-                >
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    Learn More
-                    <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </span>
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.section>
+
 
       {/* Connection Instructions Modal */}
       <AnimatePresence>
