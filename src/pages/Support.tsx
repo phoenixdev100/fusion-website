@@ -46,7 +46,7 @@ const faqItems: FAQItem[] = [
   },
   {
     question: "What are the server requirements?",
-    answer: "Our server requires Minecraft Java Edition 1.20.1 or higher. We recommend at least 4GB of RAM for optimal performance."
+    answer: "Our server requires Minecraft Java Edition 1.9 or higher. We recommend at least 4GB of RAM for optimal performance."
   },
   {
     question: "How do I claim my rank?",
@@ -58,11 +58,11 @@ const faqItems: FAQItem[] = [
   },
   {
     question: "How do I appeal a ban?",
-    answer: "You can appeal a ban by submitting a ticket on our Discord server. Please include your username and the reason for your appeal."
+    answer: "You can appeal a ban by submitting a ticket on our Discord server. Please include your username, ban id, and the reason for your appeal."
   },
   {
     question: "How do I contact support?",
-    answer: "You can contact our support team through Discord, email, or by submitting a ticket on our website."
+    answer: "You can contact our support team through Discord, email, or by submitting a support query on our website."
   }
 ];
 
@@ -122,7 +122,7 @@ const Support = () => {
                   <CardDescription className="text-gray-400 group-hover:text-white/90 transition-colors duration-500">Talk to our support team directly</CardDescription>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-gray-400 mb-6">Available 10AM - 10PM EST every day</p>
+                  <p className="text-gray-400 mb-6">Available 10AM - 6PM IST every day</p>
                   <a href="https://discord.gg/wk6yJGHkKP" target="_blank" rel="noopener noreferrer">
                     <Button className="w-full bg-gradient-to-r from-emerald-500 to-blue-500 hover:opacity-90 transform hover:scale-105 transition-all duration-300">
                       Join Discord Support
