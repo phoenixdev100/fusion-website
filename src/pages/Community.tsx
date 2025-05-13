@@ -129,20 +129,28 @@ const communityBuilds: CommunityBuild[] = [
 
 const events: CommunityEvent[] = [
   {
-    title: "PvP Tournament",
-    description: "Battle it out in our monthly PvP tournament for amazing prizes!",
-    date: "15",
-    month: "MAY",
-    type: "Tournament",
-    participants: 64
+    title: "Coming Soon...",
+    description: "Our next exciting community event is being prepared. Stay tuned for details!",
+    date: "TBA",
+    month: "SOON",
+    type: "Event",
+    participants: 0
   },
   {
-    title: "Build Competition",
-    description: "Show off your building skills in our themed building contest.",
-    date: "22",
-    month: "MAY",
-    type: "Competition",
-    participants: 128
+    title: "Coming Soon...",
+    description: "Another amazing event is in the works. Check back for more information!",
+    date: "TBA",
+    month: "SOON",
+    type: "Event",
+    participants: 0
+  },
+  {
+    title: "Coming Soon...",
+    description: "Something special is being planned for our community. Details will be announced soon!",
+    date: "TBA",
+    month: "SOON",
+    type: "Event",
+    participants: 0
   }
 ];
 
@@ -432,15 +440,15 @@ const Community = () => {
                       <p className="text-gray-400 mb-4 group-hover:text-white/90 transition-colors duration-500">{event.description}</p>
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
-                          <Users size={16} className="text-emerald-400 group-hover:scale-110 transition-transform duration-300" />
-                          <span className="text-sm text-gray-400 group-hover:text-white/90 transition-colors duration-500">{event.participants} participants</span>
+                          <Calendar size={16} className="text-emerald-400 group-hover:scale-110 transition-transform duration-300" />
+                          <span className="text-sm text-gray-400 group-hover:text-white/90 transition-colors duration-500">Announcement coming soon</span>
                         </div>
                         <a href={DISCORD_INVITE} target="_blank" rel="noopener noreferrer">
                           <Button 
                             size="sm" 
                             className="bg-gradient-to-r from-emerald-500 to-blue-500 hover:opacity-90 transform hover:scale-105 transition-all duration-300"
                           >
-                            Join Event
+                            Stay Notified
                           </Button>
                         </a>
                       </div>
