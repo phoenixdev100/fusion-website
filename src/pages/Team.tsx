@@ -33,6 +33,12 @@ const teamMembers: TeamMember[] = [
     category: "ownership",
     minecraftUsername: "Beast"
   },
+  {
+    name: "Philip",
+    role: "Server Owner",
+    category: "ownership",
+    minecraftUsername: "byteJ"
+  },
   // Development Team
   {
     name: "MstrChief100",
@@ -113,12 +119,6 @@ const teamMembers: TeamMember[] = [
     role: "Helper",
     category: "helper",
     minecraftUsername: "As_h_"
-  },
-  {
-    name: "Hatch",
-    role: "Helper",
-    category: "helper",
-    minecraftUsername: "Hatch"
   },
   {
     name: "v7try",
