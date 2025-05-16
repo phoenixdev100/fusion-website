@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 export default function ApplyPage() {
   // Form state
@@ -15,7 +15,17 @@ export default function ApplyPage() {
     languages: '',
     previousRoles: '',
     reason: '',
-    additionalInfo: ''
+    additionalInfo: '',
+    // Staff specific fields
+    premium: '',
+    banned: '',
+    currentStaff: '',
+    previousServer: '',
+    serverLinks: '',
+    inGameTime: '',
+    discordTime: '',
+    screenshare: '',
+    contribution: ''
   });
   
   // UI state
@@ -27,14 +37,88 @@ export default function ApplyPage() {
   const totalSteps = 3;
   
   const positions = [
-    'Media',
-    'YouTuber',
+    'Media/YouTuber',
     'Partner',
-    'Donator',
     'Builder',
     'Staff',
     'Developer'
   ];
+  
+  // Role-specific questions
+  const roleQuestions = {
+    'Staff': [
+      { id: 'ign', label: 'What is Your Minecraft Username?', required: true },
+      { id: 'discord', label: 'What is Your Discord Username?', required: true },
+      { id: 'email', label: 'What is Your Email Address?', required: true },
+      { id: 'timezone', label: 'What is your Timezone?', required: true },
+      { id: 'languages', label: 'What all Languages do you speak?', required: true },
+      { id: 'premium', label: 'Is your account Premium or Cracked?', required: true },
+      { id: 'age', label: 'What is Your Age?', required: true },
+      { id: 'banned', label: 'Have You ever been banned for anything in Fusion Network? If yes, then when and for what reason?', required: true },
+      { id: 'currentStaff', label: 'Are you currently a staff in any Minecraft Server (including tier communities)?', required: true },
+      { id: 'previousServer', label: 'Have you been Staffs in Any other server before?', required: true },
+      { id: 'serverLinks', label: 'What other servers have you been staff on? Paste Discord Link and IP of that server.', required: false },
+      { id: 'inGameTime', label: 'How much time can you give to Fusion Network everyday in-game?', required: true },
+      { id: 'discordTime', label: 'How much time can you give to Fusion Network everyday in discord?', required: true },
+      { id: 'screenshare', label: 'Do you know how to screenshare hackers? If yes, please write a short description of the methods you know.', required: true },
+      { id: 'reason', label: 'Why do you want to be a staff in Fusion Network', required: true },
+      { id: 'contribution', label: 'How can you contribute and benefit to the server?', required: true }
+    ],
+    'Media/YouTuber': [
+      { id: 'ign', label: 'What is your Minecraft Username?', required: true },
+      { id: 'discord', label: 'What is your Discord Username?', required: true },
+      { id: 'email', label: 'What is your Email Address?', required: true },
+      { id: 'age', label: 'What is your Age?', required: true },
+      { id: 'languages', label: 'What languages do you speak?', required: true },
+      { id: 'timezone', label: 'What is your Timezone?', required: true },
+      { id: 'additionalInfo', label: 'Please provide links to your content channels (YouTube, Twitch, TikTok, etc.)', required: true },
+      { id: 'experience', label: 'How many subscribers/followers do you have?', required: true },
+      { id: 'availability', label: 'How often do you create content?', required: true },
+      { id: 'reason', label: 'Why do you want to be a Media/YouTuber for Fusion Network?', required: true },
+      { id: 'contribution', label: 'How do you plan to feature Fusion Network in your content?', required: true }
+    ],
+    'Partner': [
+      { id: 'ign', label: 'What is your Minecraft Username?', required: true },
+      { id: 'discord', label: 'What is your Discord Username?', required: true },
+      { id: 'email', label: 'What is your Email Address?', required: true },
+      { id: 'age', label: 'What is your Age?', required: true },
+      { id: 'languages', label: 'What languages do you speak?', required: true },
+      { id: 'timezone', label: 'What is your Timezone?', required: true },
+      { id: 'additionalInfo', label: 'Please provide details about your server/community (name, size, focus)', required: true },
+      { id: 'experience', label: 'How many members does your community have?', required: true },
+      { id: 'reason', label: 'Why do you want to partner with Fusion Network?', required: true },
+      { id: 'contribution', label: 'How do you think this partnership would benefit both communities?', required: true }
+    ],
+    'Builder': [
+      { id: 'ign', label: 'What is your Minecraft Username?', required: true },
+      { id: 'discord', label: 'What is your Discord Username?', required: true },
+      { id: 'email', label: 'What is your Email Address?', required: true },
+      { id: 'age', label: 'What is your Age?', required: true },
+      { id: 'languages', label: 'What languages do you speak?', required: true },
+      { id: 'timezone', label: 'What is your Timezone?', required: true },
+      { id: 'experience', label: 'What building experience do you have?', required: true },
+      { id: 'skills', label: 'What are your building specialties? (e.g., medieval, modern, organic, etc.)', required: true },
+      { id: 'additionalInfo', label: 'Please provide portfolio links or images of your previous builds', required: true },
+      { id: 'availability', label: 'How much time can you dedicate to building projects?', required: true },
+      { id: 'reason', label: 'Why do you want to be a Builder for Fusion Network?', required: true }
+    ],
+    'Developer': [
+      { id: 'ign', label: 'What is your Minecraft Username?', required: true },
+      { id: 'discord', label: 'What is your Discord Username?', required: true },
+      { id: 'email', label: 'What is your Email Address?', required: true },
+      { id: 'age', label: 'What is your Age?', required: true },
+      { id: 'languages', label: 'What programming languages do you know?', required: true },
+      { id: 'timezone', label: 'What is your Timezone?', required: true },
+      { id: 'experience', label: 'What development experience do you have with Minecraft?', required: true },
+      { id: 'skills', label: 'What specific development skills do you have? (e.g., plugin development, web development, etc.)', required: true },
+      { id: 'additionalInfo', label: 'Please provide links to your Portfolio, GitHub or previous projects', required: true },
+      { id: 'availability', label: 'How much time can you dedicate to development projects?', required: true },
+      { id: 'reason', label: 'Why do you want to be a Developer for Fusion Network?', required: true }
+    ]
+  };
+  
+  // State for current role questions
+  const [currentQuestions, setCurrentQuestions] = useState<Array<{id: string, label: string, required: boolean}>>([]);
   
   // List of timezones for dropdown - sorted by GMT/UTC offset
   const timezones = [
@@ -183,6 +267,15 @@ export default function ApplyPage() {
     'GMT+14:00 - Pacific/Kiritimati (LINT)'
   ];
   
+  // Effect to update questions when position changes
+  useEffect(() => {
+    if (formData.position && roleQuestions[formData.position as keyof typeof roleQuestions]) {
+      setCurrentQuestions(roleQuestions[formData.position as keyof typeof roleQuestions]);
+    } else {
+      setCurrentQuestions([]);
+    }
+  }, [formData.position]);
+
   // Handle form field changes
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -200,6 +293,25 @@ export default function ApplyPage() {
     }
   }, [errors]);
   
+  // Validate email address
+  const validateEmail = useCallback((email: string): boolean => {
+    if (!email.trim()) {
+      setErrors(prev => ({ ...prev, email: 'Email address is required' }));
+      return false;
+    }
+    
+    // Comprehensive email validation regex
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email)) {
+      setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+      return false;
+    }
+    
+    // Clear error if valid
+    setErrors(prev => ({ ...prev, email: '' }));
+    return true;
+  }, []);
+  
   // Validate age - must be between 15 and 100 years old
   const validateAge = useCallback((age: string): boolean => {
     if (!age.trim()) {
@@ -207,9 +319,15 @@ export default function ApplyPage() {
       return false;
     }
     
+    // Check if age contains only digits
+    if (!/^\d+$/.test(age)) {
+      setErrors(prev => ({ ...prev, age: 'Age must be a number without any letters or special characters' }));
+      return false;
+    }
+    
     const ageNum = parseInt(age);
     if (isNaN(ageNum)) {
-      setErrors(prev => ({ ...prev, age: 'Age must be a number' }));
+      setErrors(prev => ({ ...prev, age: 'Age must be a valid number' }));
       return false;
     }
     
@@ -238,30 +356,32 @@ export default function ApplyPage() {
       isValid = false;
     }
     
-    if (!formData.ign) {
-      newErrors.ign = 'In-game name is required';
-      isValid = false;
+    // Get required fields for step 1 based on selected position
+    const requiredFields = currentQuestions
+      .filter(q => q.required)
+      .filter(q => ['ign', 'discord', 'email', 'age', 'premium', 'banned', 'currentStaff', 'previousServer'].includes(q.id))
+      .map(q => q.id);
+    
+    // Validate required fields
+    requiredFields.forEach(field => {
+      if (!formData[field as keyof typeof formData]) {
+        newErrors[field] = `This field is required`;
+        isValid = false;
+      }
+    });
+    
+    // Validate email if it's a required field
+    if (requiredFields.includes('email') && formData.email) {
+      // Comprehensive email validation regex
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address';
+        isValid = false;
+      }
     }
     
-    if (!formData.discord) {
-      newErrors.discord = 'Discord username is required';
-      isValid = false;
-    }
-    
-    // Validate email
-    if (!formData.email) {
-      newErrors.email = 'Email address is required';
-      isValid = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
-      isValid = false;
-    }
-    
-    // Validate age
-    if (!formData.age) {
-      newErrors.age = 'Age is required';
-      isValid = false;
-    } else {
+    // Validate age if it's a required field
+    if (requiredFields.includes('age') && formData.age) {
       const ageNum = parseInt(formData.age);
       if (isNaN(ageNum)) {
         newErrors.age = 'Age must be a number';
@@ -277,69 +397,123 @@ export default function ApplyPage() {
     
     setErrors(prev => ({ ...prev, ...newErrors }));
     return isValid;
-  }, [formData]);
+  }, [formData, currentQuestions]);
   
   // Validate step 2 fields
   const validateStep2 = useCallback((): boolean => {
     let isValid = true;
     const newErrors: Record<string, string> = {};
     
-    if (!formData.experience) {
-      newErrors.experience = 'Experience is required';
-      isValid = false;
-    }
+    // Get required fields for step 2 based on selected position
+    const requiredFields = currentQuestions
+      .filter(q => q.required)
+      .filter(q => ['experience', 'languages', 'availability', 'timezone', 'skills', 'inGameTime', 'discordTime', 'screenshare', 'serverLinks'].includes(q.id))
+      .map(q => q.id);
     
-    if (!formData.languages) {
-      newErrors.languages = 'Languages information is required';
-      isValid = false;
-    }
-    
-    if (!formData.availability) {
-      newErrors.availability = 'Availability is required';
-      isValid = false;
-    }
-    
-    if (!formData.timezone) {
-      newErrors.timezone = 'Timezone is required';
-      isValid = false;
-    }
+    // Validate required fields
+    requiredFields.forEach(field => {
+      if (!formData[field as keyof typeof formData]) {
+        newErrors[field] = `This field is required`;
+        isValid = false;
+      }
+    });
     
     setErrors(prev => ({ ...prev, ...newErrors }));
     return isValid;
-  }, [formData]);
+  }, [formData, currentQuestions]);
   
   // Validate step 3 fields
   const validateStep3 = useCallback((): boolean => {
     let isValid = true;
     const newErrors: Record<string, string> = {};
     
-    if (!formData.reason) {
-      newErrors.reason = 'Reason for application is required';
-      isValid = false;
-    }
+    // Get required fields for step 3 based on selected position
+    const requiredFields = currentQuestions
+      .filter(q => q.required)
+      .filter(q => ['reason', 'additionalInfo', 'contribution'].includes(q.id))
+      .map(q => q.id);
+    
+    // Validate required fields
+    requiredFields.forEach(field => {
+      if (!formData[field as keyof typeof formData]) {
+        newErrors[field] = `This field is required`;
+        isValid = false;
+      }
+    });
     
     setErrors(prev => ({ ...prev, ...newErrors }));
     return isValid;
-  }, [formData]);
+  }, [formData, currentQuestions]);
   
   // Check if current step is valid without updating state
   const isCurrentStepValid = useCallback((): boolean => {
-    // Check validity without updating errors state
-    if (step === 1) {
-      // Check step 1 fields manually
-      const validEmail = !!formData.email && /^\S+@\S+\.\S+$/.test(formData.email);
-      const ageNum = parseInt(formData.age);
-      const validAge = formData.age && ageNum >= 15 && ageNum < 100 && !isNaN(ageNum);
-      return !!(formData.position && formData.ign && formData.discord && validEmail && validAge);
-    } else if (step === 2) {
-      // Check step 2 fields manually
-      return !!(formData.experience && formData.languages && formData.availability && formData.timezone);
-    } else if (step === 3) {
-      // Check step 3 fields manually
-      return !!formData.reason;
+    // If no position is selected, only the position field needs to be valid
+    if (!formData.position) {
+      return step === 1;
     }
+    
+    // Get the questions for the current step based on selected position
+    let requiredFields: string[] = [];
+    
+    if (step === 1) {
+      requiredFields = currentQuestions
+        .filter(q => q.required)
+        .filter(q => ['ign', 'discord', 'email', 'age', 'premium', 'banned', 'currentStaff', 'previousServer'].includes(q.id))
+        .map(q => q.id);
+      
+      // Check all required fields
+      for (const field of requiredFields) {
+        if (!formData[field as keyof typeof formData]) {
+          return false;
+        }
+      }
+      
+      // Special validation for email and age
+      if (requiredFields.includes('email')) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const validEmail = !!formData.email && emailRegex.test(formData.email);
+        if (!validEmail) return false;
+      }
+      
+      if (requiredFields.includes('age')) {
+        const ageNum = parseInt(formData.age);
+        const validAge = formData.age && ageNum >= 15 && ageNum < 100 && !isNaN(ageNum);
+        if (!validAge) return false;
+      }
+      
+      return true;
+    } else if (step === 2) {
+      requiredFields = currentQuestions
+        .filter(q => q.required)
+        .filter(q => ['experience', 'languages', 'availability', 'timezone', 'skills', 'inGameTime', 'discordTime', 'screenshare', 'serverLinks'].includes(q.id))
+        .map(q => q.id);
+      
+      // Check all required fields
+      for (const field of requiredFields) {
+        if (!formData[field as keyof typeof formData]) {
+          return false;
+        }
+      }
+      
+      return true;
+    } else if (step === 3) {
+      requiredFields = currentQuestions
+        .filter(q => q.required)
+        .filter(q => ['reason', 'additionalInfo', 'contribution'].includes(q.id))
+        .map(q => q.id);
+      
+      // Check all required fields
+      for (const field of requiredFields) {
+        if (!formData[field as keyof typeof formData]) {
+          return false;
+        }
+      }
+      
+      return true;
+    }
+    
     return true;
-  }, [step, formData]);
+  }, [step, formData, currentQuestions]);
   
   // Move to next step
   const nextStep = useCallback((e?: React.FormEvent) => {
@@ -391,76 +565,47 @@ export default function ApplyPage() {
       }
       
       // Create an embed object for Discord webhook
-      const embed = {
-        title: "New Staff Application",
-        color: 0x9B59B6, // Purple color
-        fields: [
-          {
-            name: "Position",
-            value: formData.position,
-            inline: false
-          },
-          {
-            name: "IGN",
-            value: formData.ign,
-            inline: false
-          },
-          {
-            name: "Age",
-            value: formData.age,
-            inline: false
-          },
-          {
-            name: "Discord",
-            value: formData.discord,
-            inline: false
-          },
-          {
-            name: "Email",
-            value: formData.email || "Not provided",
-            inline: false
-          },
-          {
-            name: "Timezone",
-            value: formData.timezone || "Not provided",
-            inline: false
-          },
-          {
-            name: "Relevant Experience",
-            value: formData.experience || "None",
-            inline: false
-          },
-          {
-            name: "Skills",
-            value: formData.skills || "None specified",
-            inline: false
-          },
-          {
-            name: "Languages",
-            value: formData.languages || "Not specified",
-            inline: false
-          },
-          {
-            name: "Previous Roles",
-            value: formData.previousRoles || "None",
-            inline: false
-          },
-          {
-            name: "Availability",
-            value: formData.availability || "Not specified",
-            inline: false
-          },
-          {
-            name: "Reason for Application",
-            value: formData.reason || "Not provided",
-            inline: false
-          },
-          {
-            name: "Additional Information",
-            value: formData.additionalInfo || "No additional information provided",
-            inline: false
+      // Get questions for the selected position
+      const questions = roleQuestions[formData.position as keyof typeof roleQuestions] || [];
+      
+      // Build fields array dynamically based on the questions for this role
+      const fields = [
+        {
+          name: "Position",
+          value: formData.position,
+          inline: false
+        }
+      ];
+      
+      // Add fields for each question in the role
+      questions.forEach(question => {
+        const fieldName = question.id as keyof typeof formData;
+        const fieldValue = formData[fieldName] as string;
+        
+        // Get a user-friendly field name from the question label
+        let displayName = question.label;
+        if (displayName.includes('?')) {
+          // If the label is a question, extract the main subject
+          displayName = displayName.split('?')[0].trim();
+          if (displayName.toLowerCase().startsWith('what is your')) {
+            displayName = displayName.substring(13).trim();
+          } else if (displayName.toLowerCase().startsWith('what')) {
+            displayName = displayName.substring(4).trim();
           }
-        ],
+        }
+        
+        fields.push({
+          name: displayName,
+          value: fieldValue || "Not provided",
+          inline: false
+        });
+      });
+      
+      // Create the embed with the dynamic fields
+      const embed = {
+        title: `New ${formData.position} Application`,
+        color: 0x9B59B6, // Purple color
+        fields: fields,
         timestamp: new Date().toISOString(),
         footer: {
           text: `Applicant: ${formData.ign}`
@@ -489,7 +634,16 @@ export default function ApplyPage() {
         languages: '',
         previousRoles: '',
         reason: '',
-        additionalInfo: ''
+        additionalInfo: '',
+        premium: '',
+        banned: '',
+        currentStaff: '',
+        previousServer: '',
+        serverLinks: '',
+        inGameTime: '',
+        discordTime: '',
+        screenshare: '',
+        contribution: ''
       });
       setStep(1);
     } catch (err: any) {
@@ -501,10 +655,23 @@ export default function ApplyPage() {
 
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center py-6 px-4 sm:py-10 sm:px-6">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-purple-400 text-center">Staff Application</h1>
+      <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-purple-400 text-center">
+        {formData.position ? `${formData.position} Application` : 'Application Form'}
+      </h1>
       <p className="text-center text-white/70 mb-4 sm:mb-6 max-w-md px-2">
         Join our team and help make Fusion a better place for everyone! Please fill out the application form below.
       </p>
+      
+      <div className="bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border-2 border-purple-500/70 rounded-xl p-4 sm:p-5 mb-5 sm:mb-7 max-w-2xl w-full shadow-lg">
+        <div className="flex flex-col items-center">
+          <div className="text-purple-300 text-lg font-bold mb-2 flex items-center">
+            <span className="text-2xl mr-2">📢</span> IMPORTANT NOTICE
+          </div>
+          <p className="text-white text-center">
+            <span className="font-semibold">All applications must be written by you personally.</span> Applications created using AI tools or generated content will be automatically disqualified. We're looking for your authentic voice and genuine passion for the role.
+          </p>
+        </div>
+      </div>
       
       <div className="bg-[#1A1D24] p-4 sm:p-6 md:p-8 rounded-xl shadow-lg w-full max-w-2xl border border-white/10">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
@@ -557,62 +724,72 @@ export default function ApplyPage() {
                 {errors.position && <p className="text-red-500 text-sm mt-1">{errors.position}</p>}
               </div>
               
-              <div>
-                <label className="font-semibold block mb-1">What is your in-game name? *</label>
-                <input
-                  className={`p-2 rounded bg-[#23272f] border ${errors.ign ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
-                  name="ign"
-                  value={formData.ign}
-                  onChange={handleChange}
-                  placeholder="Your Minecraft username"
-                  required
-                />
-                {errors.ign && <p className="text-red-500 text-sm mt-1">{errors.ign}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">How old are you? * <span className="text-xs text-gray-400">(must be at least 15)</span></label>
-                <input
-                  className={`p-2 rounded bg-[#23272f] border ${errors.age ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
-                  name="age"
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  value={formData.age}
-                  onChange={handleChange}
-                  onBlur={() => validateAge(formData.age)}
-                  placeholder="Your age (minimum 15)"
-                  required
-                />
-                {errors.age && <p className="text-red-500 text-sm mt-1">{errors.age}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">Discord username *</label>
-                <input
-                  className={`p-2 rounded bg-[#23272f] border ${errors.discord ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
-                  name="discord"
-                  value={formData.discord}
-                  onChange={handleChange}
-                  placeholder="Your Discord username (e.g. username#1234)"
-                  required
-                />
-                {errors.discord && <p className="text-red-500 text-sm mt-1">{errors.discord}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">Email address *</label>
-                <input
-                  className={`p-2 rounded bg-[#23272f] border ${errors.email ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Your email address"
-                  required
-                />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-              </div>
+              {/* Display step 1 questions based on selected position */}
+              {formData.position && currentQuestions
+                .filter(q => ['ign', 'discord', 'email', 'age', 'premium', 'banned', 'currentStaff', 'previousServer'].includes(q.id))
+                .map(question => {
+                  const fieldName = question.id as keyof typeof formData;
+                  const fieldError = errors[fieldName];
+                  
+                  // Special case for age field which needs additional validation
+                  if (fieldName === 'age') {
+                    return (
+                      <div key={fieldName}>
+                        <label className="font-semibold block mb-1">{question.label} {question.required && '*'} <span className="text-xs text-gray-400">(must be at least 15)</span></label>
+                        <input
+                          className={`p-2 rounded bg-[#23272f] border ${fieldError ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
+                          name={fieldName}
+                          type="text"
+                          inputMode="numeric"
+                          pattern="[0-9]*"
+                          value={formData[fieldName] as string}
+                          onChange={handleChange}
+                          onBlur={() => validateAge(formData[fieldName] as string)}
+                          placeholder="Your age (minimum 15)"
+                          required={question.required}
+                        />
+                        {fieldError && <p className="text-red-500 text-sm mt-1">{fieldError}</p>}
+                      </div>
+                    );
+                  }
+                  
+                  // Email field needs type="email"
+                  if (fieldName === 'email') {
+                    return (
+                      <div key={fieldName}>
+                        <label className="font-semibold block mb-1">{question.label} {question.required && '*'}</label>
+                        <input
+                          className={`p-2 rounded bg-[#23272f] border ${fieldError ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
+                          name={fieldName}
+                          type="email"
+                          value={formData[fieldName] as string}
+                          onChange={handleChange}
+                          onBlur={() => validateEmail(formData[fieldName] as string)}
+                          placeholder="Your email address"
+                          required={question.required}
+                        />
+                        {fieldError && <p className="text-red-500 text-sm mt-1">{fieldError}</p>}
+                      </div>
+                    );
+                  }
+                  
+                  // For other text fields
+                  return (
+                    <div key={fieldName}>
+                      <label className="font-semibold block mb-1">{question.label} {question.required && '*'}</label>
+                      <input
+                        className={`p-2 rounded bg-[#23272f] border ${fieldError ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full`}
+                        name={fieldName}
+                        value={formData[fieldName] as string}
+                        onChange={handleChange}
+                        placeholder={`Enter your ${fieldName.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+                        required={question.required}
+                      />
+                      {fieldError && <p className="text-red-500 text-sm mt-1">{fieldError}</p>}
+                    </div>
+                  );
+                })
+              }
             </div>
           )}
           
@@ -620,84 +797,53 @@ export default function ApplyPage() {
             <div className="space-y-3 sm:space-y-4">
               <h2 className="text-lg sm:text-xl font-bold text-purple-400 mb-2 sm:mb-4">Experience & Availability</h2>
               
-              <div>
-                <label className="font-semibold block mb-1">What relevant experience do you have? *</label>
-                <textarea
-                  className={`p-2 rounded bg-[#23272f] border ${errors.experience ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full min-h-[80px]`}
-                  name="experience"
-                  value={formData.experience}
-                  onChange={handleChange}
-                  placeholder="Tell us about your previous experience related to this position"
-                  required
-                />
-                {errors.experience && <p className="text-red-500 text-sm mt-1">{errors.experience}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">What skills do you have that are relevant to this position?</label>
-                <textarea
-                  className="p-2 rounded bg-[#23272f] border border-white/10 focus:outline-none focus:border-purple-500 text-white w-full min-h-[80px]"
-                  name="skills"
-                  value={formData.skills}
-                  onChange={handleChange}
-                  placeholder="List your relevant skills (e.g. building, coding, moderation, etc.)"
-                />
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">What languages do you speak and how fluent are you? *</label>
-                <textarea
-                  className={`p-2 rounded bg-[#23272f] border ${errors.languages ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full min-h-[80px]`}
-                  name="languages"
-                  value={formData.languages}
-                  onChange={handleChange}
-                  placeholder="List languages you speak and your fluency level (e.g. English, Hindi, etc.)"
-                  required
-                />
-                {errors.languages && <p className="text-red-500 text-sm mt-1">{errors.languages}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">Have you held similar roles on other servers?</label>
-                <textarea
-                  className="p-2 rounded bg-[#23272f] border border-white/10 focus:outline-none focus:border-purple-500 text-white w-full min-h-[80px]"
-                  name="previousRoles"
-                  value={formData.previousRoles}
-                  onChange={handleChange}
-                  placeholder="Tell us about any previous roles you've had on other servers"
-                />
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">What is your availability? *</label>
-                <textarea
-                  className={`p-2 rounded bg-[#23272f] border ${errors.availability ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full min-h-[60px]`}
-                  name="availability"
-                  value={formData.availability}
-                  onChange={handleChange}
-                  placeholder="How many hours per week can you dedicate?"
-                  required
-                />
-                {errors.availability && <p className="text-red-500 text-sm mt-1">{errors.availability}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">What timezone are you in? *</label>
-                <select
-                  className={`p-2 rounded bg-[#23272f] border ${errors.timezone ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full text-sm sm:text-base`}
-                  name="timezone"
-                  value={formData.timezone}
-                  onChange={handleChange}
-                  required
-                  style={{ maxWidth: '100%', textOverflow: 'ellipsis' }}
-                >
-                  <option value="">Select your timezone</option>
-                  {timezones.map((tz) => (
-                    <option key={tz} value={tz} style={{ fontSize: '0.9rem' }}>{tz}</option>
-                  ))}
-                </select>
-                {errors.timezone && <p className="text-red-500 text-sm mt-1">{errors.timezone}</p>}
-              </div>
+              {/* Display step 2 questions based on selected position */}
+              {formData.position && currentQuestions
+                .filter(q => ['experience', 'languages', 'availability', 'timezone', 'skills', 'inGameTime', 'discordTime', 'screenshare', 'serverLinks'].includes(q.id))
+                .map(question => {
+                  const fieldName = question.id as keyof typeof formData;
+                  const fieldError = errors[fieldName];
+                  
+                  // Special case for timezone which needs the dropdown
+                  if (fieldName === 'timezone') {
+                    return (
+                      <div key={fieldName}>
+                        <label className="font-semibold block mb-1">{question.label} {question.required && '*'}</label>
+                        <select
+                          className={`p-2 rounded bg-[#23272f] border ${fieldError ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full text-sm sm:text-base`}
+                          name={fieldName}
+                          value={formData[fieldName] as string}
+                          onChange={handleChange}
+                          required={question.required}
+                          style={{ maxWidth: '100%', textOverflow: 'ellipsis' }}
+                        >
+                          <option value="">Select your timezone</option>
+                          {timezones.map((tz) => (
+                            <option key={tz} value={tz} style={{ fontSize: '0.9rem' }}>{tz}</option>
+                          ))}
+                        </select>
+                        {fieldError && <p className="text-red-500 text-sm mt-1">{fieldError}</p>}
+                      </div>
+                    );
+                  }
+                  
+                  // For all other fields, use textareas
+                  return (
+                    <div key={fieldName}>
+                      <label className="font-semibold block mb-1">{question.label} {question.required && '*'}</label>
+                      <textarea
+                        className={`p-2 rounded bg-[#23272f] border ${fieldError ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full min-h-[80px]`}
+                        name={fieldName}
+                        value={formData[fieldName] as string}
+                        onChange={handleChange}
+                        placeholder={`Enter your ${fieldName.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+                        required={question.required}
+                      />
+                      {fieldError && <p className="text-red-500 text-sm mt-1">{fieldError}</p>}
+                    </div>
+                  );
+                })
+              }
             </div>
           )}
           
@@ -705,29 +851,29 @@ export default function ApplyPage() {
             <div className="space-y-3 sm:space-y-4">
               <h2 className="text-lg sm:text-xl font-bold text-purple-400 mb-2 sm:mb-4">Motivation & Additional Information</h2>
               
-              <div>
-                <label className="font-semibold block mb-1">Why do you want to join our team? *</label>
-                <textarea
-                  className={`p-2 rounded bg-[#23272f] border ${errors.reason ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full min-h-[100px]`}
-                  name="reason"
-                  value={formData.reason}
-                  onChange={handleChange}
-                  placeholder="Tell us why you're interested in this position and what you can bring to our team"
-                  required
-                />
-                {errors.reason && <p className="text-red-500 text-sm mt-1">{errors.reason}</p>}
-              </div>
-              
-              <div>
-                <label className="font-semibold block mb-1">Any additional information you'd like to share?</label>
-                <textarea
-                  className="p-2 rounded bg-[#23272f] border border-white/10 focus:outline-none focus:border-purple-500 text-white w-full min-h-[100px]"
-                  name="additionalInfo"
-                  value={formData.additionalInfo}
-                  onChange={handleChange}
-                  placeholder="Anything else you'd like us to know about you? (socials, youtube links, builds made or any relevent info, etc.)"
-                />
-              </div>
+              {/* Display step 3 questions based on selected position */}
+              {formData.position && currentQuestions
+                .filter(q => ['reason', 'additionalInfo', 'contribution'].includes(q.id))
+                .map(question => {
+                  const fieldName = question.id as keyof typeof formData;
+                  const fieldError = errors[fieldName];
+                  
+                  return (
+                    <div key={fieldName}>
+                      <label className="font-semibold block mb-1">{question.label} {question.required && '*'}</label>
+                      <textarea
+                        className={`p-2 rounded bg-[#23272f] border ${fieldError ? 'border-red-500' : 'border-white/10'} focus:outline-none focus:border-purple-500 text-white w-full min-h-[100px]`}
+                        name={fieldName}
+                        value={formData[fieldName] as string}
+                        onChange={handleChange}
+                        placeholder={`Enter your ${fieldName.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+                        required={question.required}
+                      />
+                      {fieldError && <p className="text-red-500 text-sm mt-1">{fieldError}</p>}
+                    </div>
+                  );
+                })
+              }
             </div>
           )}
           <div className="flex justify-between mt-6 w-full">
