@@ -26,6 +26,59 @@ interface Mod {
   features: string[];
 }
 
+// List of prohibited mods that players should not use
+interface ProhibitedMod {
+  name: string;
+  reason: string;
+  type: 'cheat' | 'performance' | 'compatibility';
+  alternatives?: string;
+}
+
+const prohibitedMods: ProhibitedMod[] = [
+  {
+    name: 'Hack Client',
+    reason: 'Contains cheats and hacks that provide unfair advantages.',
+    type: 'cheat',
+    alternatives: 'None - cheating clients are strictly prohibited'
+  },
+  {
+    name: 'X-Ray Mods',
+    reason: 'Allows players to see through blocks to find ores and structures.',
+    type: 'cheat',
+    alternatives: 'None - use legitimate mining techniques'
+  },
+  {
+    name: 'Auto-Clicker Mods',
+    reason: 'Automates actions to give unfair advantages in combat and resource gathering.',
+    type: 'cheat',
+    alternatives: 'None - automation tools are not allowed'
+  },
+  {
+    name: 'Fly Hack',
+    reason: 'Enables unauthorized flight capabilities outside of creative mode.',
+    type: 'cheat',
+    alternatives: 'None - use server-approved movement methods only'
+  },
+  {
+    name: 'Baritone',
+    reason: 'AI pathfinding and automation tool that gives unfair advantages.',
+    type: 'cheat',
+    alternatives: 'None - automated navigation is not permitted'
+  },
+  {
+    name: 'Outdated OptiFine Versions',
+    reason: 'Older versions may cause server compatibility issues.',
+    type: 'compatibility',
+    alternatives: 'Use the latest OptiFine version compatible with our server'
+  },
+  {
+    name: 'Conflicting Minimap Mods',
+    reason: 'Some minimap mods conflict with our server plugins.',
+    type: 'compatibility',
+    alternatives: 'Use Xaero\'s Minimap as recommended'
+  }
+] as const;
+
 const requiredMods: Mod[] = [
   {
     name: 'Forge API',
@@ -137,7 +190,7 @@ const item = {
 const RequiredMods = () => {
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-purple-900/20 to-black">
-      <div className="container py-12 px-4">
+      <div className="container py-8 md:py-12 px-4">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -147,10 +200,10 @@ const RequiredMods = () => {
           <Badge variant="outline" className="mb-4 bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
             Mod Guide
           </Badge>
-          <h1 className="text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-purple-500 to-pink-500">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-purple-500 to-pink-500">
             Required Mods
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
             Enhance your gameplay experience with our carefully selected mods
           </p>
         </motion.div>
@@ -224,7 +277,27 @@ const RequiredMods = () => {
           </Card>
 
           <Tabs defaultValue="all" className="mb-8">
-            <TabsList className="grid grid-cols-1 md:grid-cols-5 bg-black/40 border border-white/10 p-1 rounded-lg">
+            {/* Mobile tabs - show icons only on small screens */}
+            <TabsList className="flex md:hidden flex-wrap bg-black/40 border border-white/10 p-1 rounded-lg">
+              <TabsTrigger value="all" className="flex-1 data-[state=active]:bg-purple-500/20">
+                <Box className="w-5 h-5" />
+              </TabsTrigger>
+              <TabsTrigger value="required" className="flex-1 data-[state=active]:bg-purple-500/20">
+                <Shield className="w-5 h-5" />
+              </TabsTrigger>
+              <TabsTrigger value="optimization" className="flex-1 data-[state=active]:bg-purple-500/20">
+                <Zap className="w-5 h-5" />
+              </TabsTrigger>
+              <TabsTrigger value="utility" className="flex-1 data-[state=active]:bg-purple-500/20">
+                <Settings className="w-5 h-5" />
+              </TabsTrigger>
+              <TabsTrigger value="cosmetic" className="flex-1 data-[state=active]:bg-purple-500/20">
+                <Sparkles className="w-5 h-5" />
+              </TabsTrigger>
+            </TabsList>
+            
+            {/* Desktop tabs - show text and icons on larger screens */}
+            <TabsList className="hidden md:grid md:grid-cols-5 bg-black/40 border border-white/10 p-1 rounded-lg">
               <TabsTrigger value="all" className="data-[state=active]:bg-purple-500/20">
                 <Box className="w-4 h-4 mr-2" />
                 All Mods
@@ -253,7 +326,7 @@ const RequiredMods = () => {
                   variants={container}
                   initial="hidden"
                   animate="show"
-                  className="grid gap-4"
+                  className="grid gap-4 px-2 md:px-0"
                 >
                   {requiredMods
                     .filter(mod => 
@@ -284,7 +357,7 @@ const RequiredMods = () => {
                 <div className="space-y-4">
                   <div className="bg-black/20 p-4 rounded-xl">
                     <h3 className="font-medium mb-2 flex items-center gap-2">
-                      <Check className="h-4 w-4 text-emerald-400" />
+                      <Check className="h-4 w-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                       Compatible Mods
                     </h3>
                     <ul className="space-y-2 text-sm text-gray-400">
@@ -297,7 +370,7 @@ const RequiredMods = () => {
 
                   <div className="bg-black/20 p-4 rounded-xl">
                     <h3 className="font-medium mb-2 flex items-center gap-2">
-                      <X className="h-4 w-4 text-red-400" />
+                      <X className="h-4 w-4 text-red-400 flex-shrink-0 mt-0.5" />
                       Prohibited Mods
                     </h3>
                     <ul className="space-y-2 text-sm text-gray-400">
@@ -312,7 +385,7 @@ const RequiredMods = () => {
                 <div className="space-y-4">
                   <div className="bg-black/20 p-4 rounded-xl">
                     <h3 className="font-medium mb-2 flex items-center gap-2">
-                      <Server className="h-4 w-4 text-blue-400" />
+                      <Server className="h-4 w-4 text-blue-400 flex-shrink-0 mt-0.5" />
                       Server Requirements
                     </h3>
                     <ul className="space-y-2 text-sm text-gray-400">
@@ -325,7 +398,7 @@ const RequiredMods = () => {
 
                   <div className="bg-yellow-500/10 border border-yellow-500/30 p-4 rounded-xl">
                     <h3 className="font-medium mb-2 flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-yellow-500" />
+                      <Clock className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-0.5" />
                       Update Schedule
                     </h3>
                     <p className="text-sm text-gray-400">
@@ -333,6 +406,41 @@ const RequiredMods = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Prohibited Mods Section */}
+          <Card className="backdrop-blur-sm bg-black/40 border-0 rounded-xl mt-8 overflow-hidden">
+            <div className="bg-gradient-to-r from-red-500/20 to-transparent py-1 px-0"></div>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <X className="h-6 w-6 text-red-500" />
+                Prohibited Mods
+              </CardTitle>
+              <CardDescription>
+                Using these mods may result in a permanent ban from our server
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {prohibitedMods.map((mod) => (
+                  <div key={mod.name} className="bg-black/30 rounded-lg p-4 border-l-2 border-red-500">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-bold text-white">{mod.name}</h3>
+                      <Badge variant="outline" className="border-red-500/50 text-red-400 text-xs">
+                        {mod.type === 'cheat' ? 'Unfair Advantage' : 
+                         mod.type === 'performance' ? 'Performance Issue' : 'Compatibility'}
+                      </Badge>
+                    </div>
+                    <p className="text-sm text-gray-400">{mod.reason}</p>
+                    {mod.alternatives && (
+                      <p className="text-xs text-gray-500 mt-2 italic">
+                        Alternative: {mod.alternatives}
+                      </p>
+                    )}
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -353,8 +461,8 @@ const ModCard = ({ mod }: { mod: Mod }) => {
           'from-pink-500/10 via-pink-500/5'
         } to-transparent`} />
         
-        <CardContent className="p-6">
-          <div className="flex flex-wrap justify-between items-start gap-4">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
             <div className="space-y-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
@@ -368,17 +476,17 @@ const ModCard = ({ mod }: { mod: Mod }) => {
                 <p className="text-gray-400">{mod.description}</p>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 md:gap-4">
                 {mod.features.map((feature, index) => (
-                  <div key={index} className="flex items-center gap-2 text-sm text-gray-400">
-                    <Check className="h-4 w-4 text-emerald-400" />
+                  <div key={index} className="flex items-start gap-2 text-sm text-gray-400">
+                    <Check className="h-4 w-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                     {feature}
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-col items-end gap-3">
+            <div className="flex flex-row sm:flex-col items-start sm:items-end gap-3 mt-2 sm:mt-0">
               <div className="flex items-center gap-2 text-sm">
                 <Badge variant="outline" className="border-blue-500 text-blue-400">
                   v{mod.version}
@@ -394,5 +502,6 @@ const ModCard = ({ mod }: { mod: Mod }) => {
     </motion.div>
   );
 };
+
 
 export default RequiredMods;
