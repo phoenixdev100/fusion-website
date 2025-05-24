@@ -20,7 +20,7 @@ import {
 
 const versions = [
   {
-    version: "1.20.1",
+    version: "1.20.4",
     status: "recommended",
     features: "Full",
     notes: "Optimized for the best experience on our server with all features available.",
@@ -34,10 +34,10 @@ const versions = [
     ]
   },
   {
-    version: "1.19.4",
+    version: "1.20.2",
     status: "supported",
     features: "Full",
-    notes: "All features are supported, but 1.20.1 is recommended for the best experience.",
+    notes: "All features are supported, but 1.20.4 is recommended for the best experience.",
     clientDownloadUrl: "https://www.minecraft.net/en-us/download",
     specificFeatures: [
       "Full support for most custom items",
@@ -47,7 +47,7 @@ const versions = [
     ]
   },
   {
-    version: "1.19.2",
+    version: "1.20.1",
     status: "supported",
     features: "Partial",
     notes: "Most features work, but some new items and blocks will appear differently.",
@@ -60,7 +60,7 @@ const versions = [
     ]
   },
   {
-    version: "1.18.2",
+    version: "1.19.x",
     status: "legacy",
     features: "Basic",
     notes: "Basic gameplay works but many custom features are limited or unavailable.",
@@ -73,33 +73,33 @@ const versions = [
     ]
   },
   {
-    version: "1.17.1",
-    status: "deprecated",
+    version: "1.18.x - 1.16.x",
+    status: "legacy",
     features: "Limited",
-    notes: "Connection support only, many features will not work correctly.",
+    notes: "Connection support with limited features. Many custom elements will not display correctly.",
     clientDownloadUrl: "https://www.minecraft.net/en-us/download",
     specificFeatures: [
-      "Very limited feature support",
-      "Basic connection only",
-      "Many features unavailable",
-      "Not recommended for gameplay"
+      "Basic connection support",
+      "Limited feature availability",
+      "Major visual differences",
+      "Not recommended for optimal gameplay"
     ]
   },
   {
-    version: "1.16.5",
+    version: "1.15.x - 1.12.x",
     status: "deprecated",
-    features: "Limited",
-    notes: "Connection support only, many features will not work correctly.",
+    features: "Minimal",
+    notes: "Basic connection only. Most custom features will not work correctly.",
     clientDownloadUrl: "https://www.minecraft.net/en-us/download",
     specificFeatures: [
       "Minimal feature support",
       "Basic connection only",
       "Most features unavailable",
-      "Not recommended for gameplay"
+      "For legacy players only"
     ]
   },
   {
-    version: "1.12.2 and older",
+    version: "1.11.x and older",
     status: "unsupported",
     features: "None",
     notes: "These versions cannot connect to our server.",
@@ -150,7 +150,7 @@ const performanceRecommendations = [
 
 const modCompatibility = {
   recommended: [
-    "OptiFine HD U H4",
+    "OptiFine HD U I8",
     "Sodium",
     "Lithium",
     "Phosphor",
@@ -158,17 +158,18 @@ const modCompatibility = {
   ],
   compatible: [
     "JourneyMap",
+    "MouseOverInfo",
     "AppleSkin",
-    "Mouse Tweaks",
-    "JEI (Just Enough Items)",
-    "Xaero's Minimap"
+    "JEI (Just Enough Items) 15.2.0+",
+    "Xaero's Minimap 24.0+"
   ],
   incompatible: [
-    "Hacked Clients",
+    "Hack Clients",
     "X-Ray Mods",
     "Auto-Clickers",
     "Advantage-giving mods",
-    "PvP Enhancement mods"
+    "PvP Enhancement mods",
+    "Outdated mod versions"
   ]
 };
 
@@ -315,7 +316,7 @@ const SupportedVersions = () => {
                               </Badge>
                   </div>
                   
-                            {version.clientDownloadUrl && (
+                            {/* {version.clientDownloadUrl && (
                               <div className="flex items-center gap-2 text-sm">
                                 <span className="text-gray-400">Official Client:</span>
                                 <Badge variant="outline" className="border-purple-500 text-purple-400 cursor-pointer hover:bg-purple-500/10">
@@ -325,7 +326,7 @@ const SupportedVersions = () => {
                                   </div>
                                 </Badge>
                   </div>
-                            )}
+                            )} */}
                 </div>
               </div>
                       </div>
