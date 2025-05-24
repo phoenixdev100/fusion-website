@@ -66,6 +66,12 @@ const prohibitedMods: ProhibitedMod[] = [
     alternatives: 'None - automated navigation is not permitted'
   },
   {
+    name: 'Freecam',
+    reason: 'Enables unauthorized flight capabilities outside of creative mode.',
+    type: 'cheat',
+    alternatives: 'None - use server-approved movement methods only'
+  },
+  {
     name: 'Outdated OptiFine Versions',
     reason: 'Older versions may cause server compatibility issues.',
     type: 'compatibility',
@@ -82,7 +88,7 @@ const prohibitedMods: ProhibitedMod[] = [
 const requiredMods: Mod[] = [
   {
     name: 'Forge API',
-    version: '47.1.0',
+    version: '48.0.49',
     description: 'The core modding API that provides functionality for other mods to work properly.',
     downloadUrl: 'https://files.minecraftforge.net/net/minecraftforge/forge/',
     required: true,
@@ -97,7 +103,7 @@ const requiredMods: Mod[] = [
   },
   {
     name: 'FusionCore',
-    version: '2.4.3',
+    version: '3.1.2',
     description: 'Custom server-side mod required to connect to Fusion Network. Enhances gameplay with server-specific features.',
     downloadUrl: '#',
     required: true,
@@ -112,7 +118,7 @@ const requiredMods: Mod[] = [
   },
   {
     name: 'OptiFine',
-    version: 'HD U H8',
+    version: 'HD U I8',
     description: 'Optimization mod that increases performance and allows for better graphics settings.',
     downloadUrl: 'https://optifine.net/downloads',
     required: false,
@@ -127,7 +133,7 @@ const requiredMods: Mod[] = [
   },
   {
     name: 'JEI (Just Enough Items)',
-    version: '11.5.0.297',
+    version: '15.2.0.27',
     description: 'View recipes for items and blocks in-game with an enhanced inventory interface.',
     downloadUrl: 'https://www.curseforge.com/minecraft/mc-mods/jei',
     required: false,
@@ -142,7 +148,7 @@ const requiredMods: Mod[] = [
   },
   {
     name: 'Xaero\'s Minimap',
-    version: '23.4.4',
+    version: '24.0.2',
     description: 'Adds an in-game minimap to help navigate the server world.',
     downloadUrl: 'https://www.curseforge.com/minecraft/mc-mods/xaeros-minimap',
     required: false,
@@ -157,7 +163,7 @@ const requiredMods: Mod[] = [
   },
   {
     name: 'FusionTextures',
-    version: '1.5.0',
+    version: '2.0.1',
     description: 'Custom resource pack for enhanced server textures and effects.',
     downloadUrl: '#',
     required: false,
@@ -216,7 +222,7 @@ const RequiredMods = () => {
                 Installation Guide
               </CardTitle>
               <CardDescription>
-                Follow these steps to properly install and configure the required mods
+                Follow these steps to properly install and configure the required mods. Our server supports Minecraft versions from 1.12.x to the latest (1.20.4).
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -230,7 +236,7 @@ const RequiredMods = () => {
                     </div>
                     <div className="bg-black/20 p-6 pl-16 rounded-xl">
                       <h3 className="font-medium mb-2">Install Forge</h3>
-                      <p className="text-sm text-gray-400">Download and install Forge 47.1.0 for Minecraft 1.20.1</p>
+                      <p className="text-sm text-gray-400">Download and install Forge 48.0.49 for Minecraft 1.20.4 (recommended) or the appropriate Forge version for your Minecraft version</p>
                     </div>
                   </div>
 
