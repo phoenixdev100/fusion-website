@@ -161,7 +161,7 @@ const modCompatibility = {
     "MouseOverInfo",
     "AppleSkin",
     "JEI (Just Enough Items) 15.2.0+",
-    "Xaero's Minimap 24.0+"
+    "Optifine"
   ],
   incompatible: [
     "Hack Clients",
@@ -169,7 +169,8 @@ const modCompatibility = {
     "Auto-Clickers",
     "Advantage-giving mods",
     "PvP Enhancement mods",
-    "Outdated mod versions"
+    "Outdated mod versions",
+    "Xaero's Minimap"
   ]
 };
 
@@ -201,16 +202,33 @@ const SupportedVersions = () => {
           <Badge variant="outline" className="mb-4 bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
             Version Guide
           </Badge>
-          <h1 className="text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-purple-500 to-pink-500">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-purple-500 to-pink-500">
             Supported Versions
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">
             Find out which Minecraft versions work best with our server and get detailed compatibility information.
           </p>
         </motion.div>
 
         <Tabs defaultValue="versions" className="max-w-6xl mx-auto">
-          <TabsList className="grid grid-cols-1 md:grid-cols-4 bg-black/40 border border-white/10 p-1 rounded-lg mb-8">
+          {/* Mobile tabs - icons only */}
+          <TabsList className="flex md:hidden flex-wrap bg-black/40 border border-white/10 p-1 rounded-lg mb-8">
+            <TabsTrigger value="versions" className="flex-1 data-[state=active]:bg-purple-500/20">
+              <Layers className="w-5 h-5" />
+            </TabsTrigger>
+            <TabsTrigger value="performance" className="flex-1 data-[state=active]:bg-purple-500/20">
+              <Cpu className="w-5 h-5" />
+            </TabsTrigger>
+            <TabsTrigger value="mods" className="flex-1 data-[state=active]:bg-purple-500/20">
+              <Settings className="w-5 h-5" />
+            </TabsTrigger>
+            <TabsTrigger value="bedrock" className="flex-1 data-[state=active]:bg-purple-500/20">
+              <Server className="w-5 h-5" />
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Desktop tabs - text and icons */}
+          <TabsList className="hidden md:grid grid-cols-4 bg-black/40 border border-white/10 p-1 rounded-lg mb-8">
             <TabsTrigger value="versions" className="data-[state=active]:bg-purple-500/20">
               <Layers className="w-4 h-4 mr-2" />
               Versions
@@ -236,7 +254,7 @@ const SupportedVersions = () => {
               Recommended Version
             </AlertTitle>
             <AlertDescription>
-              We recommend using Minecraft 1.20.1 for the best gameplay experience on Fusion Network.
+              We recommend using Minecraft 1.20.4 for the best gameplay experience on Fusion Network.
             </AlertDescription>
           </Alert>
           
@@ -244,7 +262,7 @@ const SupportedVersions = () => {
               variants={container}
               initial="hidden"
               animate="show"
-              className="grid gap-4"
+              className="grid gap-4 px-2 md:px-0"
             >
               {versions.map((version) => (
                 <motion.div key={version.version} variants={item}>
@@ -261,8 +279,8 @@ const SupportedVersions = () => {
                       'from-red-500/10 via-red-500/5'
                     } to-transparent`} />
                     
-                    <CardContent className="p-6">
-                      <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="text-2xl font-bold text-white">Minecraft {version.version}</h3>
@@ -279,8 +297,8 @@ const SupportedVersions = () => {
                           <p className="text-gray-400">{version.notes}</p>
                   </div>
                   
-                        <div className="flex flex-col items-end gap-3">
-                          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${
+                        <div className="flex flex-col sm:items-end gap-3 mt-2 sm:mt-0">
+                          <div className={`inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-full text-xs sm:text-sm ${
                             version.status === 'recommended' ? "bg-emerald-500/20 text-emerald-400" :
                             version.status === 'supported' ? "bg-blue-500/20 text-blue-400" :
                             version.status === 'legacy' ? "bg-amber-500/20 text-amber-400" :
