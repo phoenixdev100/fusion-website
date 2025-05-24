@@ -598,6 +598,20 @@ const ServerInfo = () => {
                         <p className="text-sm text-gray-400">Optimized for smooth gameplay experience</p>
                       </div>
                     </div>
+                    <div className="flex items-start gap-3">
+                      <Shield className="h-5 w-5 text-green-500 mt-1" />
+                      <div>
+                        <h3 className="font-medium">DDOS Protected</h3>
+                        <p className="text-sm text-gray-400">Protected from DDoS attacks</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Users className="h-5 w-5 text-green-500 mt-1" />
+                      <div>
+                        <h3 className="font-medium">Fast Support</h3>
+                        <p className="text-sm text-gray-400">Quick responses to your queries</p>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -624,6 +638,23 @@ const ServerInfo = () => {
                           onClick={() => {
                             navigator.clipboard.writeText('fusion-network.xyz');
                             toast.success('Server IP copied to clipboard');
+                          }}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-black/20 rounded-lg">
+                      <span className="font-medium">Backup IP</span>
+                      <div className="flex items-center gap-2">
+                        <code className="bg-black/30 px-3 py-1 rounded">as.fusion-network.xyz</code>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => {
+                            navigator.clipboard.writeText('as.fusion-network.xyz');
+                            toast.success('Backup IP copied to clipboard');
                           }}
                         >
                           <Copy className="h-4 w-4" />
