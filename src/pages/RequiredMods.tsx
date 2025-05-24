@@ -147,21 +147,6 @@ const requiredMods: Mod[] = [
     ]
   },
   {
-    name: 'Xaero\'s Minimap',
-    version: '24.0.2',
-    description: 'Adds an in-game minimap to help navigate the server world.',
-    downloadUrl: 'https://www.curseforge.com/minecraft/mc-mods/xaeros-minimap',
-    required: false,
-    type: 'utility',
-    size: '2.8 MB',
-    features: [
-      'Real-time navigation',
-      'Waypoint system',
-      'World mapping',
-      'Player tracking'
-    ]
-  },
-  {
     name: 'FusionTextures',
     version: '2.0.1',
     description: 'Custom resource pack for enhanced server textures and effects.',
