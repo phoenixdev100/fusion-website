@@ -244,8 +244,8 @@ export function MainLayout({ children, className }: MainLayoutProps) {
               <h3 className="text-white font-semibold">Quick Links</h3>
               <div className="space-y-2">
                 <FooterLink to="/server-info">Server Info</FooterLink>
-                <FooterLink to="/store">Store</FooterLink>
-                <FooterLink to="/vote">Vote</FooterLink>
+                <FooterLink to="/required-mods">Required Mods</FooterLink>
+                <FooterLink to="/versions">Required Version</FooterLink>
                 <FooterLink to="/leaderboard">Leaderboard</FooterLink>
               </div>
             </div>
