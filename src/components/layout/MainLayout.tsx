@@ -269,6 +269,8 @@ export function MainLayout({ children, className }: MainLayoutProps) {
               <div className="space-y-2">
                 <FooterLink to="/terms">Terms of Service</FooterLink>
                 <FooterLink to="/privacy">Privacy Policy</FooterLink>
+                <FooterLink to="/dmca">Copyright Policy</FooterLink>
+                <FooterLink to="/coppa">Parental Consent</FooterLink>
               </div>
             </div>
           </div>
