@@ -287,40 +287,54 @@ const NavLink = ({ children, to, isActive, className }: {
   to: string, 
   isActive: boolean,
   className?: string 
-}) => (
-  <Link
-    to={to}
-    className={cn(
-      "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200",
-      isActive
-        ? "bg-purple-500/20 text-purple-400"
-        : "text-gray-300 hover:bg-purple-500/10 hover:text-purple-400",
-      className
-    )}
-  >
-    {children}
-  </Link>
-);
+}) => {
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <Link
+      to={to}
+      className={cn(
+        "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-full transition-all duration-200",
+        isActive
+          ? "bg-purple-500/20 text-purple-400"
+          : "text-gray-300 hover:bg-purple-500/10 hover:text-purple-400",
+        className
+      )}
+      onClick={handleClick}
+    >
+      {children}
+    </Link>
+  );
+};
 
 const MobileNavLink = ({ children, to, isActive, onClick }: { 
   children: React.ReactNode, 
   to: string, 
   isActive: boolean,
   onClick: () => void
-}) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    className={cn(
-      "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200",
-      isActive
-        ? "bg-purple-500/20 text-purple-400"
-        : "text-gray-300 hover:bg-purple-500/10 hover:text-purple-400"
-    )}
-  >
-    {children}
-  </Link>
-);
+}) => {
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    onClick(); // Call the original onClick to close the mobile menu
+  };
+
+  return (
+    <Link
+      to={to}
+      className={cn(
+        "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200",
+        isActive
+          ? "bg-purple-500/20 text-purple-400"
+          : "text-gray-300 hover:bg-purple-500/10 hover:text-purple-400"
+      )}
+      onClick={handleClick}
+    >
+      {children}
+    </Link>
+  );
+};
 
 const SocialButton = ({ children, href }: { children: React.ReactNode, href: string }) => (
   <a
@@ -333,11 +347,18 @@ const SocialButton = ({ children, href }: { children: React.ReactNode, href: str
   </a>
 );
 
-const FooterLink = ({ children, to }: { children: React.ReactNode, to: string }) => (
-  <Link
-    to={to}
-    className="text-gray-400 hover:text-purple-400 transition-colors block"
-  >
-    {children}
-  </Link>
-);
+const FooterLink = ({ children, to }: { children: React.ReactNode, to: string }) => {
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <Link
+      to={to}
+      className="text-gray-400 hover:text-purple-400 transition-colors block"
+      onClick={handleClick}
+    >
+      {children}
+    </Link>
+  );
+};
