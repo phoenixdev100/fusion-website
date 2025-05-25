@@ -23,6 +23,8 @@ import RequiredMods from "./pages/RequiredMods";
 import SupportedVersions from "./pages/SupportedVersions";
 import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
+import DMCA from "./pages/DMCA";
+import COPPA from "./pages/COPPA";
 import Team from "./pages/Team";
 import ApplyPage from "./pages/apply";
 
@@ -57,6 +59,8 @@ const App = () => (
                 <Route path="versions" element={<SupportedVersions />} />
                 <Route path="terms" element={<Terms />} />
                 <Route path="privacy" element={<Privacy />} />
+                <Route path="dmca" element={<DMCA />} />
+                <Route path="coppa" element={<COPPA />} />
               </Route>
 
               {/* 404 Route */}
