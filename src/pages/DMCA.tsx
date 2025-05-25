@@ -71,16 +71,6 @@ const DMCA = () => {
                 <p>
                   To submit a DMCA notice, please send an email to <span className="text-purple-400">support@fusion-network.xyz</span> with the subject line "DMCA Notice" and include all the required information listed above.
                 </p>
-                <p>
-                  Alternatively, you may send a written notice to our designated agent at:
-                </p>
-                <div className="bg-black/30 p-4 rounded-lg">
-                  <p>Fusion Network</p>
-                  <p>Attn: Copyright Agent</p>
-                  <p>123 Gaming Street</p>
-                  <p>Server City, SC 12345</p>
-                  <p>United States</p>
-                </div>
                 <p className="text-sm italic">
                   Please note that under Section 512(f) of the DMCA, any person who knowingly materially misrepresents that material or activity is infringing may be subject to liability.
                 </p>
