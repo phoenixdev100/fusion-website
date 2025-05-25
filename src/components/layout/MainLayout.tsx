@@ -112,6 +112,10 @@ export function MainLayout({ children, className }: MainLayoutProps) {
                       <Trophy className="h-4 w-4" />
                       <span>Leaderboard</span>
                     </NavLink>
+                    <a href="https://forums.fusion-network.xyz" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-purple-500/10 transition-all duration-200">
+                      <MessageSquare className="h-4 w-4" />
+                      <span>Forums</span>
+                    </a>
                     <NavLink to="/rules" isActive={isActive('/rules')} className="px-4 py-2">
                       <BookOpen className="h-4 w-4" />
                       <span>Rules</span>
