@@ -47,22 +47,22 @@ export default function ApplyPage() {
   // Role-specific questions
   const roleQuestions = {
     'Staff': [
-      { id: 'ign', label: 'What is Your Minecraft Username?', required: true },
-      { id: 'discord', label: 'What is Your Discord Username?', required: true },
-      { id: 'email', label: 'What is Your Email Address?', required: true },
-      { id: 'timezone', label: 'What is your Timezone?', required: true },
-      { id: 'languages', label: 'What all Languages do you speak?', required: true },
+      { id: 'ign', label: 'What is your Minecraft username?', required: true },
+      { id: 'discord', label: 'What is your Discord username?', required: true },
+      { id: 'email', label: 'What is your email address?', required: true },
+      { id: 'timezone', label: 'What is your timezone?', required: true },
+      { id: 'languages', label: 'What languages do you speak?', required: true },
       { id: 'premium', label: 'Is your account Premium or Cracked?', required: true },
-      { id: 'age', label: 'What is Your Age?', required: true },
-      { id: 'banned', label: 'Have You ever been banned for anything in Fusion Network? If yes, then when and for what reason?', required: true },
-      { id: 'currentStaff', label: 'Are you currently a staff in any Minecraft Server (including tier communities)?', required: true },
-      { id: 'previousServer', label: 'Have you been Staffs in Any other server before?', required: true },
-      { id: 'serverLinks', label: 'What other servers have you been staff on? Paste Discord Link and IP of that server.', required: false },
-      { id: 'inGameTime', label: 'How much time can you give to Fusion Network everyday in-game?', required: true },
-      { id: 'discordTime', label: 'How much time can you give to Fusion Network everyday in discord?', required: true },
+      { id: 'age', label: 'What is your age?', required: true },
+      { id: 'banned', label: 'Have you ever been banned for anything in Fusion Network? If yes, then when and for what reason?', required: true },
+      { id: 'currentStaff', label: 'Are you currently a staff member in any Minecraft server (including tier communities)?', required: true },
+      { id: 'previousServer', label: 'Have you been a staff member in any other server before?', required: true },
+      { id: 'serverLinks', label: 'What other servers have you been staff on? Paste Discord link and IP of those servers.', required: false },
+      { id: 'inGameTime', label: 'How much time can you give to Fusion Network every day in-game?', required: true },
+      { id: 'discordTime', label: 'How much time can you give to Fusion Network every day in Discord?', required: true },
       { id: 'screenshare', label: 'Do you know how to screenshare hackers? If yes, please write a short description of the methods you know.', required: true },
-      { id: 'reason', label: 'Why do you want to be a staff in Fusion Network', required: true },
-      { id: 'contribution', label: 'How can you contribute and benefit to the server?', required: true }
+      { id: 'reason', label: 'Why do you want to be a staff member in Fusion Network?', required: true },
+      { id: 'contribution', label: 'How can you contribute and benefit the server?', required: true }
     ],
     'Media/YouTuber': [
       { id: 'ign', label: 'What is your Minecraft Username?', required: true },
