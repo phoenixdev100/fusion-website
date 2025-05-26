@@ -602,9 +602,31 @@ export default function ApplyPage() {
       });
       
       // Create the embed with the dynamic fields
+      // Set color based on position type
+      let embedColor;
+      switch(formData.position) {
+        case 'Developer':
+          embedColor = 0x00FFFF; // Cyan
+          break;
+        case 'Media/YouTuber':
+          embedColor = 0xFF0000; // Red
+          break;
+        case 'Staff':
+          embedColor = 0xFFFF00; // Yellow
+          break;
+        case 'Partner':
+          embedColor = 0xFF69B4; // Pink
+          break;
+        case 'Builder':
+          embedColor = 0x00FF00; // Green
+          break;
+        default:
+          embedColor = 0x9B59B6; // Default purple color
+      }
+      
       const embed = {
         title: `New ${formData.position} Application`,
-        color: 0x9B59B6, // Purple color
+        color: embedColor,
         fields: fields,
         timestamp: new Date().toISOString(),
         footer: {
