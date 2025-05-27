@@ -660,25 +660,25 @@ export default function ApplyPage() {
       // Create position-specific content for the webhook message
       let content = "";
       
-      switch(formData.position) {
-        case 'Developer':
-          content = "<@&DEVELOPER_ROLE_ID> A new developer application has been submitted!";
-          break;
-        case 'Media/YouTuber':
-          content = "<@&MEDIA_ROLE_ID> A new content creator application has been submitted!";
-          break;
-        case 'Staff':
-          content = "<@&STAFF_MANAGER_ROLE_ID> A new staff application has been submitted!";
-          break;
-        case 'Partner':
-          content = "<@&PARTNERSHIP_ROLE_ID> A new partnership application has been submitted!";
-          break;
-        case 'Builder':
-          content = "<@&BUILDER_ROLE_ID> A new builder application has been submitted!";
-          break;
-        default:
-          content = "A new application has been submitted.";
-      }
+      // switch(formData.position) {
+      //   case 'Developer':
+      //     content = "<@&DEVELOPER_ROLE_ID> A new developer application has been submitted!";
+      //     break;
+      //   case 'Media/YouTuber':
+      //     content = "<@&MEDIA_ROLE_ID> A new content creator application has been submitted!";
+      //     break;
+      //   case 'Staff':
+      //     content = "<@&STAFF_MANAGER_ROLE_ID> A new staff application has been submitted!";
+      //     break;
+      //   case 'Partner':
+      //     content = "<@&PARTNERSHIP_ROLE_ID> A new partnership application has been submitted!";
+      //     break;
+      //   case 'Builder':
+      //     content = "<@&BUILDER_ROLE_ID> A new builder application has been submitted!";
+      //     break;
+      //   default:
+      //     content = "A new application has been submitted.";
+      // }
       
       const res = await fetch(webhookUrl, {
         method: 'POST',
