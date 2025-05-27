@@ -602,42 +602,89 @@ export default function ApplyPage() {
       });
       
       // Create the embed with the dynamic fields
-      // Set color based on position type
+      // Set color and customize message based on position type
       let embedColor;
+      let embedTitle;
+      let embedDescription = "";
+      let thumbnailUrl = "";
+      
       switch(formData.position) {
         case 'Developer':
           embedColor = 0x00FFFF; // Cyan
+          embedTitle = "New Developer Application";
+          // embedDescription = "A new developer wants to join our team! Please review their coding skills and experience.";
+          // thumbnailUrl = "https://cdn.discordapp.com/emojis/1042377154350325780.webp?size=96&quality=lossless"; // Code emoji
           break;
         case 'Media/YouTuber':
           embedColor = 0xFF0000; // Red
+          embedTitle = "New Media/YouTuber Application";
+          // embedDescription = "A content creator wants to collaborate with us! Check out their channel and stats.";
+          // thumbnailUrl = "https://cdn.discordapp.com/emojis/1042377136985497620.webp?size=96&quality=lossless"; // YouTube emoji
           break;
         case 'Staff':
           embedColor = 0xFFFF00; // Yellow
+          embedTitle = "New Staff Application";
+          // embedDescription = "Someone wants to join our staff team! Review their experience and qualifications.";
+          // thumbnailUrl = "https://cdn.discordapp.com/emojis/1042377150642970705.webp?size=96&quality=lossless"; // Staff emoji
           break;
         case 'Partner':
           embedColor = 0xFF69B4; // Pink
+          embedTitle = "New Partnership Application";
+          // embedDescription = "A new server wants to partner with us! Check out their community details.";
+          // thumbnailUrl = "https://cdn.discordapp.com/emojis/1042377145362075658.webp?size=96&quality=lossless"; // Partnership emoji
           break;
         case 'Builder':
           embedColor = 0x00FF00; // Green
+          embedTitle = "New Builder Application";
+          // embedDescription = "A builder wants to join our creative team! Review their portfolio and skills.";
+          // thumbnailUrl = "https://cdn.discordapp.com/emojis/1042377141889683476.webp?size=96&quality=lossless"; // Builder emoji
           break;
         default:
           embedColor = 0x9B59B6; // Default purple color
+          embedTitle = `New ${formData.position} Application`;
+          embedDescription = "A new application has been submitted.";
       }
       
       const embed = {
-        title: `New ${formData.position} Application`,
+        title: embedTitle,
+        description: embedDescription,
         color: embedColor,
         fields: fields,
         timestamp: new Date().toISOString(),
+        thumbnail: thumbnailUrl ? { url: thumbnailUrl } : undefined,
         footer: {
           text: `Applicant: ${formData.ign}`
         }
       };
 
+      // Create position-specific content for the webhook message
+      let content = "";
+      
+      switch(formData.position) {
+        case 'Developer':
+          content = "<@&DEVELOPER_ROLE_ID> A new developer application has been submitted!";
+          break;
+        case 'Media/YouTuber':
+          content = "<@&MEDIA_ROLE_ID> A new content creator application has been submitted!";
+          break;
+        case 'Staff':
+          content = "<@&STAFF_MANAGER_ROLE_ID> A new staff application has been submitted!";
+          break;
+        case 'Partner':
+          content = "<@&PARTNERSHIP_ROLE_ID> A new partnership application has been submitted!";
+          break;
+        case 'Builder':
+          content = "<@&BUILDER_ROLE_ID> A new builder application has been submitted!";
+          break;
+        default:
+          content = "A new application has been submitted.";
+      }
+      
       const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          content: content,
           embeds: [embed]
         })
       });
