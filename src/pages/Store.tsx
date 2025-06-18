@@ -45,7 +45,7 @@ const Store = () => {
             <StoreItem
               title="VIP Rank"
               description="Entry-level rank for Practice PvP."
-              price={4}
+              price={4.00}
               benefits={["Exclusive chat prefix", "Access to VIP queue", "/nick command"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-1', '_blank', 'noopener,noreferrer')}
               color="from-blue-500 to-indigo-500"
@@ -53,7 +53,7 @@ const Store = () => {
             <StoreItem
               title="VIP+ Rank"
               description="Enhanced perks for dedicated PvP players."
-              price={8}
+              price={8.00}
               benefits={["All VIP perks", "VIP+ chat badge", "Priority support"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-1', '_blank', 'noopener,noreferrer')}
               color="from-indigo-500 to-purple-500"
@@ -61,7 +61,7 @@ const Store = () => {
             <StoreItem
               title="Elite Rank"
               description="Elite status with more features."
-              price={14}
+              price={14.00}
               benefits={["All VIP+ perks", "Elite chat color", "Special cosmetics"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-1', '_blank', 'noopener,noreferrer')}
               color="from-purple-500 to-pink-500"
@@ -69,7 +69,7 @@ const Store = () => {
             <StoreItem
               title="MVP+ Rank"
               description="Top-tier Practice PvP rank."
-              price={25}
+              price={25.00}
               benefits={["All Elite perks", "MVP+ exclusive kit", "Lobby effects"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-1', '_blank', 'noopener,noreferrer')}
               color="from-pink-500 to-yellow-500"
@@ -77,7 +77,7 @@ const Store = () => {
             <StoreItem
               title="Fusion Rank"
               description="Ultimate rank for Practice PvP."
-              price={90}
+              price={90.00}
               benefits={["All MVP+ perks", "Fusion chat tag", "Unique cosmetics"]}
               onPurchase={() => window.open('https://fusion-network.tebex.io/category/ranks-1', '_blank', 'noopener,noreferrer')}
               color="from-yellow-500 to-emerald-500"
@@ -213,7 +213,7 @@ const StoreItem = ({ title, description, price, benefits, onPurchase, color }: S
         
         <CardFooter className="relative flex flex-col gap-4">
           <p className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
-            ${price}.00
+            ${price}
           </p>
           <Button 
             onClick={onPurchase} 
