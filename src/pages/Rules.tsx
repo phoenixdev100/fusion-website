@@ -73,7 +73,8 @@ const Rules = () => {
                 "Respect safe zones and non-PvP areas",
                 "No spawn killing or repeated targeting of the same player",
                 "Fair play is required - no teaming in solo PvP events",
-                "Report any PvP-related bugs to staff immediately"
+                "Report any PvP-related bugs to staff immediately",
+                "Kit abuse or exploiting PvP mechanics is prohibited"
               ]
             },
             {
