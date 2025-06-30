@@ -82,6 +82,12 @@ const prohibitedMods: ProhibitedMod[] = [
     reason: 'Some minimap mods conflict with our server plugins.',
     type: 'compatibility',
     alternatives: ' None - Don\'t use Xaero\'s Minimap'
+  },
+  {
+    name: 'Kit Abusing',
+    reason: 'Kit abusing and their mods are not allowed.',
+    type: 'cheat',
+    alternatives: ' None - Don\'t kit abuse'
   }
 ] as const;
 
