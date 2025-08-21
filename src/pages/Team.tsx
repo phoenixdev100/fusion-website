@@ -127,16 +127,16 @@ const teamMembers: TeamMember[] = [
     minecraftUsername: "Refridgeratored"
   },
   {
+    name: "DarkVoid_",
+    role: "Helper",
+    category: "helper",
+    minecraftUsername: "DarkVoid_"
+  },
+  {
     name: "Kryozap",
     role: "Trial Staff",
     category: "helper",
     minecraftUsername: "Kryozap"
-  },
-  {
-    name: "DarkVoid_",
-    role: "Trial Staff",
-    category: "helper",
-    minecraftUsername: "DarkVoid_"
   },
   {
     name: "Desertedeagle",
