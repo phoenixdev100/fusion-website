@@ -10,6 +10,7 @@ import { ArrowLeft, Send, AlertCircle, CheckCircle2, Loader2, BookOpen } from 'l
 export default function ApplyForm() {
   const navigate = useNavigate();
   
+  // Initialize ALL possible fields to prevent controlled/uncontrolled warning
   const [formData, setFormData] = useState({
     ign: '',
     position: '',
@@ -32,7 +33,32 @@ export default function ApplyForm() {
     inGameTime: '',
     discordTime: '',
     screenshare: '',
-    contribution: ''
+    contribution: '',
+    // Add all missing fields
+    dateOfBirth: '',
+    gender: '',
+    country: '',
+    punished: '',
+    discordCalls: '',
+    recordVideos: '',
+    disabilities: '',
+    otherAccounts: '',
+    sharedAccounts: '',
+    usedOthersAccounts: '',
+    accessToOthersAccounts: '',
+    motivation: '',
+    experienceSkills: '',
+    hobbies: '',
+    bestMemory: '',
+    strength: '',
+    weakness: '',
+    whyAccept: '',
+    scenario1: '',
+    scenario2: '',
+    scenario3: '',
+    scenario4: '',
+    primaryMotivation: '',
+    timeCommitment: ''
   });
   
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -410,6 +436,21 @@ export default function ApplyForm() {
     return isValid;
   }, [formData, currentQuestions]);
 
+  // Helper function to truncate text to fit Discord limits
+  const truncateText = (text: string, maxLength: number = 1024): string => {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength - 3) + '...';
+  };
+
+  // Helper function to split fields into chunks of 24 (leaving room for the position field)
+  const chunkFields = (fields: any[], chunkSize: number = 24) => {
+    const chunks = [];
+    for (let i = 0; i < fields.length; i += chunkSize) {
+      chunks.push(fields.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -438,26 +479,20 @@ export default function ApplyForm() {
       
       const questions = roleQuestions[formData.position as keyof typeof roleQuestions] || [];
       
-      const fields = [
-        {
-          name: "Position",
-          value: formData.position,
-          inline: false
-        }
-      ];
-      
-      questions.forEach(question => {
+      // Build all fields
+      const allFields = questions.map(question => {
         const fieldName = question.id as keyof typeof formData;
         const fieldValue = formData[fieldName] as string;
         
-        let displayName = question.label;
-        
-        fields.push({
-          name: displayName,
-          value: fieldValue || "Not provided",
+        return {
+          name: truncateText(question.label, 256), // Discord field name limit
+          value: truncateText(fieldValue || "Not provided", 1024), // Discord field value limit
           inline: false
-        });
+        };
       });
+      
+      // Chunk fields to respect Discord's 25 field limit
+      const fieldChunks = chunkFields(allFields, 24);
       
       let embedColor;
       let embedTitle;
@@ -488,26 +523,46 @@ export default function ApplyForm() {
           embedTitle = `New ${formData.position} Application`;
       }
       
-      const embed = {
-        title: embedTitle,
-        color: embedColor,
-        fields: fields,
-        timestamp: new Date().toISOString(),
-        footer: {
-          text: `Applicant: ${formData.ign}`
-        }
-      };
+      // Create embeds
+      const embeds = fieldChunks.map((chunk, index) => {
+        const isFirstEmbed = index === 0;
+        const isLastEmbed = index === fieldChunks.length - 1;
+        
+        return {
+          title: isFirstEmbed ? embedTitle : `${embedTitle} (Part ${index + 1})`,
+          color: embedColor,
+          fields: [
+            ...(isFirstEmbed ? [{
+              name: "Position",
+              value: formData.position,
+              inline: false
+            }] : []),
+            ...chunk
+          ],
+          ...(isLastEmbed ? {
+            timestamp: new Date().toISOString(),
+            footer: {
+              text: `Applicant: ${formData.ign}`
+            }
+          } : {})
+        };
+      });
       
+      // Send to Discord webhook
       const res = await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          content: "",
-          embeds: [embed]
+          content: `📋 **New ${formData.position} Application Received**`,
+          embeds: embeds
         })
       });
       
-      if (!res.ok) throw new Error('Failed to submit application.');
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('Discord webhook error:', errorText);
+        throw new Error('Failed to submit application. Please try again.');
+      }
       
       setSuccess(true);
       setFormData({
@@ -532,7 +587,31 @@ export default function ApplyForm() {
         inGameTime: '',
         discordTime: '',
         screenshare: '',
-        contribution: ''
+        contribution: '',
+        dateOfBirth: '',
+        gender: '',
+        country: '',
+        punished: '',
+        discordCalls: '',
+        recordVideos: '',
+        disabilities: '',
+        otherAccounts: '',
+        sharedAccounts: '',
+        usedOthersAccounts: '',
+        accessToOthersAccounts: '',
+        motivation: '',
+        experienceSkills: '',
+        hobbies: '',
+        bestMemory: '',
+        strength: '',
+        weakness: '',
+        whyAccept: '',
+        scenario1: '',
+        scenario2: '',
+        scenario3: '',
+        scenario4: '',
+        primaryMotivation: '',
+        timeCommitment: ''
       });
       
       window.scrollTo({ top: 0, behavior: 'smooth' });
