@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  Crown, 
-  Shield, 
-  Code, 
-  Users, 
-  Star, 
-  Award, 
+import {
+  Crown,
+  Shield,
+  Code,
+  Users,
+  Star,
+  Award,
   Sparkles,
   Github as GithubIcon
 } from 'lucide-react';
@@ -46,29 +46,29 @@ const teamMembers: TeamMember[] = [
     category: "development",
     minecraftUsername: "n0step_"
   },
+  // {
+  //   name: "kespyy",
+  //   role: "Developer",
+  //   category: "development",
+  //   minecraftUsername: "kespyy"
+  // },
+  // {
+  //   name: "lished",
+  //   role: "Developer",
+  //   category: "development",
+  //   minecraftUsername: "lished"
+  // },
+  // {
+  //   name: "airzz_",
+  //   role: "Developer",
+  //   category: "development",
+  //   minecraftUsername: "airzz_"
+  // },
   {
-    name: "kespyy",
+    name: "SnailManXV",
     role: "Developer",
     category: "development",
-    minecraftUsername: "kespyy"
-  },
-  {
-    name: "lished",
-    role: "Developer",
-    category: "development",
-    minecraftUsername: "lished"
-  },
-  {
-    name: "airzz_",
-    role: "Developer",
-    category: "development",
-    minecraftUsername: "airzz_"
-  },
-  {
-    name: "JimSpecter",
-    role: "Developer",
-    category: "development",
-    minecraftUsername: "JimSpecter"
+    minecraftUsername: "SnailManXV"
   },
   // Moderation Team
   {
@@ -78,65 +78,71 @@ const teamMembers: TeamMember[] = [
     minecraftUsername: "KiriNaved"
   },
   {
-    name: "winnowed",
-    role: "Moderator",
-    category: "moderation",
-    minecraftUsername: "winnowed"
-  },
-  {
     name: "_Aquaking",
     role: "Moderator",
     category: "moderation",
     minecraftUsername: "_Aquaking"
   },
   {
-    name: "cubed",
+    name: "Adavya",
     role: "Moderator",
     category: "moderation",
-    minecraftUsername: "cubed"
+    minecraftUsername: "Telivisionated"
   },
   {
-    name: "zWillX0",
+    name: "Winnowed",
     role: "Moderator",
     category: "moderation",
-    minecraftUsername: "zWillX0"
+    minecraftUsername: "Winnowed"
+  },
+  {
+    name: "_NotAlive",
+    role: "Moderator",
+    category: "moderation",
+    minecraftUsername: "_NotAlive"
   },
   // Helper Team
   {
-    name: "Winzyy_y",
+    name: "Ohidul-",
     role: "Helper",
     category: "helper",
-    minecraftUsername: "Winzyy_y"
+    minecraftUsername: "Ohidulx69"
   },
   {
-    name: "As_h_",
+    name: "Wasi",
     role: "Helper",
     category: "helper",
-    minecraftUsername: "As_h_"
+    minecraftUsername: "Wasiboi"
   },
   {
-    name: "v7try",
+    name: "Refridgeratored",
     role: "Helper",
     category: "helper",
-    minecraftUsername: "v7try"
+    minecraftUsername: "Refridgeratored"
   },
   {
-    name: "Valor",
+    name: "DarkVoid_",
     role: "Helper",
     category: "helper",
-    minecraftUsername: "ValorReign"
+    minecraftUsername: "DarkVoid_"
   },
   {
-    name: "Vorduen",
-    role: "Helper",
+    name: "Kryozap",
+    role: "Trial Staff",
     category: "helper",
-    minecraftUsername: "Vorduen"
+    minecraftUsername: "Kryozap"
   },
   {
-    name: "Searce",
-    role: "Helper",
+    name: "Desertedeagle",
+    role: "Trial Staff",
     category: "helper",
-    minecraftUsername: "Searce"
+    minecraftUsername: "AK515"
+  },
+  {
+    name: "Fotitude",
+    role: "Trial Staff",
+    category: "helper",
+    minecraftUsername: "Fotitude"
   }
 ];
 
@@ -238,7 +244,7 @@ const Team = () => {
           {categories.map((category, categoryIndex) => {
             const categoryMembers = teamMembers.filter(member => member.category === category);
             const memberCount = categoryMembers.length;
-            
+
             return (
               <motion.div
                 key={category}
@@ -255,11 +261,10 @@ const Team = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className={`grid gap-4 ${
-                      memberCount === 1 ? 'grid-cols-1' :
+                    <div className={`grid gap-4 ${memberCount === 1 ? 'grid-cols-1' :
                       memberCount === 2 ? 'grid-cols-1 md:grid-cols-2' :
-                      'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-                    }`}>
+                        'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                      }`}>
                       {categoryMembers.map((member, index) => (
                         <motion.div
                           key={member.minecraftUsername}
@@ -324,9 +329,9 @@ const Team = () => {
                               {/* Minecraft Username */}
                               <div className="text-xs text-gray-500 bg-black/30 px-3 py-1.5 rounded-full">
                                 <span className="inline-flex items-center gap-1.5">
-                                  <img 
-                                    src={`https://mc-heads.net/head/${member.minecraftUsername}/16`} 
-                                    alt="Minecraft" 
+                                  <img
+                                    src={`https://mc-heads.net/head/${member.minecraftUsername}/16`}
+                                    alt="Minecraft"
                                     className="w-4 h-4"
                                   />
                                   {member.minecraftUsername}
