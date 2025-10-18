@@ -26,7 +26,9 @@ import Privacy from "./pages/Privacy";
 import DMCA from "./pages/DMCA";
 import COPPA from "./pages/COPPA";
 import Team from "./pages/Team";
-import ApplyPage from "./pages/apply";
+import ApplyCategory from "./pages/apply/index";
+import ApplyGuidelines from "./pages/apply/guidelines";
+import ApplyForm from "./pages/apply/form";
 
 // Protected Pages
 
@@ -53,7 +55,9 @@ const App = () => (
                 <Route path="community" element={<Community />} />
                 <Route path="team" element={<Team />} />
                 <Route path="support" element={<Support />} />
-                <Route path="apply" element={<ApplyPage />} />
+                <Route path="apply" element={<ApplyCategory />} />
+                <Route path="apply/guidelines" element={<ApplyGuidelines />} />
+                <Route path="apply/form" element={<ApplyForm />} />
                 <Route path="vote" element={<Vote />} />
                 <Route path="required-mods" element={<RequiredMods />} />
                 <Route path="versions" element={<SupportedVersions />} />

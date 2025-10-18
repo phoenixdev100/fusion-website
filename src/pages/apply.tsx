@@ -300,7 +300,7 @@ export default function ApplyPage() {
       return false;
     }
     
-    // Comprehensive email validation regex
+    // Email validation regex
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
@@ -312,7 +312,7 @@ export default function ApplyPage() {
     return true;
   }, []);
   
-  // Validate age - must be between 15 and 100 years old
+  // Validate age - must be between 16 and 100 years old
   const validateAge = useCallback((age: string): boolean => {
     if (!age.trim()) {
       setErrors(prev => ({ ...prev, age: 'Age is required' }));
@@ -331,8 +331,8 @@ export default function ApplyPage() {
       return false;
     }
     
-    if (ageNum < 15) {
-      setErrors(prev => ({ ...prev, age: 'You must be at least 15 years old to apply' }));
+    if (ageNum < 16) {
+      setErrors(prev => ({ ...prev, age: 'You must be at least 16 years old to apply' }));
       return false;
     }
     
