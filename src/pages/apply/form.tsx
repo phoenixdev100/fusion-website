@@ -357,8 +357,8 @@ export default function ApplyForm() {
     }
     
     const ageNum = parseInt(age);
-    if (isNaN(ageNum) || ageNum < 15) {
-      setErrors(prev => ({ ...prev, age: 'You must be at least 15 years old to apply' }));
+    if (isNaN(ageNum) || ageNum < 16) {
+      setErrors(prev => ({ ...prev, age: 'You must be at least 16 years old to apply' }));
       return false;
     }
     
@@ -399,8 +399,8 @@ export default function ApplyForm() {
       
       if (fieldName === 'age' && value) {
         const ageNum = parseInt(value);
-        if (isNaN(ageNum) || ageNum < 15 || ageNum >= 100) {
-          newErrors.age = 'You must be at least 15 years old to apply';
+        if (isNaN(ageNum) || ageNum < 16 || ageNum >= 100) {
+          newErrors.age = 'You must be at least 16 years old to apply';
           isValid = false;
         }
       }

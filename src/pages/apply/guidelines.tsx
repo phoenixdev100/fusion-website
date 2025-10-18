@@ -53,7 +53,7 @@ Welcome to the Fusion Network application process. Please read these guidelines 
 ## General Requirements
 
 ### Age Requirement
-- You must be **at least 15 years old** to apply for any position
+- You must be **at least 16 years old** to apply for any position
 - Age verification may be required during the application process
 
 ### Account Requirements
@@ -70,7 +70,7 @@ Welcome to the Fusion Network application process. Please read these guidelines 
 ## Position-Specific Requirements
 
 ### 🛡️ Staff Position
-- Minimum age: 15 years
+- Minimum age: 16 years
 - At least 10 hours per week availability
 - Knowledge of server rules and regulations
 - Experience with screensharing is preferred

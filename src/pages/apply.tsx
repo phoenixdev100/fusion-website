@@ -386,8 +386,8 @@ export default function ApplyPage() {
       if (isNaN(ageNum)) {
         newErrors.age = 'Age must be a number';
         isValid = false;
-      } else if (ageNum < 15) {
-        newErrors.age = 'You must be at least 15 years old to apply';
+      } else if (ageNum < 16) {
+        newErrors.age = 'You must be at least 16 years old to apply';
         isValid = false;
       } else if (ageNum >= 100) {
         newErrors.age = 'Age must be less than 100';
